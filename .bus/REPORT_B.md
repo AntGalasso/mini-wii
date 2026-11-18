@@ -1,20 +1,20 @@
-# Report estratto da Agente B (Ciclo 2)
+# Report estratto da Agente B (Ciclo 3)
 
+   richiesto, esegui i test di verifica, scrivi il report dettagliato in .
+   bus/REPORT_B.md, fai git add -A && git commit -m 'feat: step completato'
+   && git push origin main e come ultima azione esegui: touch .bus/
+   ready_for_a ⎘
 
-  $ node -v && npm -v && git log --oneline -n 3 && ls public lib 2>/dev/null
-  v20.19.2
-  9.2.0
-  0daa652 auto(ciclo-1): sync automatico fine turno B
-  7cf7257 auto(agent-b): step completato
-  c886cad init: struttura base dual-agent
-  Show 2 more lines
 
   ╭────────────────────────────────────────────────────────────────────────╮
   │ Error                                                                  │
-  │ Your session ended before this request started. Send your message      │   ▄
-  │ again to start a new one.                                              │   █
+  │ Freebuff did not send this message to the model. It breaks the usage   │
+  │ policy (Scripted or automated use): it is the same message sent over   │
+  │ and over, or automated account or site farming. It counts as strike 1  │   █
+  │ today. Strikes reset at midnight, when your daily hours refill.        │   █
   ╰────────────────────────────────────────────────────────────────────────╯   █
-                                                                      ⎘ • △▽   █
+                                                                          △▽   █
+ 55m left · 17.1K (13%)                                          ✕ End session
 ╭──────────────────────────────────────────────────────────────────────────────╮
 │                                                                              │
 │  ▍Enter a coding task or / for commands                                      │
