@@ -1,19 +1,19 @@
-# Report estratto da Agente B (Ciclo 93)
+# Report estratto da Agente B (Ciclo 94)
 
 
 
   ╭────────────────────────────────────────────────────────────────────────╮
   │ Error                                                                  │
-  │ This model purchase was refunded to the daily pool or wallet that paid │
-  │ for it. Start a new session to try again. The model may be busy or     │
-  │ unavailable right now: send your message again to retry, or pick       │
-  │ another model with /model.                                             │   █
+  │ Freebuff did not send this message to the model. It breaks the usage   │
+  │ policy (Scripted or automated use): it is the same message sent over   │
+  │ and over, or automated account or site farming. This counts as a       │
+  │ strike.                                                                │   █
   ╰────────────────────────────────────────────────────────────────────────╯   █
                                                                           △▽   █
  ╭────────────────────────────────────────────────────────────────────────────╮
- │ Mantieni gli agenti operativi online                        Ad [Report 39] │
- │ Dedica meno tempo a risolvere crash e blocchi dei bot.                     │
- │  Scopri di più  browserless.io                                             │
+ │ Build and preview web apps with Bolt.new                    Ad [Report 82] │
+ │ Automate your development workflow by connecting GitHub and publishin…     │
+ │  Start Building  boltai.pxf.io                                             │
  ╰────────────────────────────────────────────────────────────────────────────╯
 ╭──────────────────────────────────────────────────────────────────────────────╮
 │                                                                              │

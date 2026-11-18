@@ -1,4 +1,4 @@
-# Task estratto da Agente A (Ciclo 93)
+# Task estratto da Agente A (Ciclo 94)
 
 
 
@@ -11,9 +11,9 @@
   ╰────────────────────────────────────────────────────────────────────────╯   █
                                                                           △▽   █
  ╭────────────────────────────────────────────────────────────────────────────╮
- │ Metti la tua app online in un click                         Ad [Report 24] │
- │ Freebuff la crea e la ospita su un link freebuff.app.                      │
- │  Distribuisci app  freebuff.com                                            │
+ │ Niente prompt, solo correzioni di bug                       Ad [Report 28] │
+ │ PostHog diagnostica automaticamente i problemi del prodotto.               │
+ │  Scopri di più  posthog.com                                                │
  ╰────────────────────────────────────────────────────────────────────────────╯
 ╭──────────────────────────────────────────────────────────────────────────────╮
 │                                                                              │
