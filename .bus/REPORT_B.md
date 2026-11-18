@@ -1,20 +1,20 @@
-# Report estratto da Agente B (Ciclo 19)
+# Report estratto da Agente B (Ciclo 20)
 
-   richiesto, esegui i test di verifica, scrivi il report dettagliato in .
-   bus/REPORT_B.md, fai git add -A && git commit -m 'feat: step completato'
-   && git push origin main e come ultima azione esegui: touch .bus/
-   ready_for_a ⎘
 
 
   ╭────────────────────────────────────────────────────────────────────────╮
-  │ Error                                                                  │   ▄
-  │ Freebuff did not send this message to the model. It breaks the usage   │   █
-  │ policy (Scripted or automated use): it is the same message sent over   │   █
-  │ and over, or automated account or site farming. It counts as strike 2  │   █
-  │ today. Strikes reset at midnight, when your daily hours refill.        │   █
+  │ Error                                                                  │
+  │ This model purchase was refunded to the daily pool or wallet that paid │
+  │ for it. Start a new session to try again. The model may be busy or     │
+  │ unavailable right now: send your message again to retry, or pick       │
+  │ another model with /model.                                             │   █
   ╰────────────────────────────────────────────────────────────────────────╯   █
                                                                           △▽   █
- 0:55 left · 17.1K (13%)                                         ✕ End session
+ ╭────────────────────────────────────────────────────────────────────────────╮
+ │ Get structured global news data in real time                Ad [Report 10] │
+ │ Integrate Webz.io's News API to query articles with precise filters a…     │
+ │  Get Started  webz.io                                                      │
+ ╰────────────────────────────────────────────────────────────────────────────╯
 ╭──────────────────────────────────────────────────────────────────────────────╮
 │                                                                              │
 │  ▍Enter a coding task or / for commands                                      │
