@@ -1,4 +1,4 @@
-# Report estratto da Agente B (Ciclo 9)
+# Report estratto da Agente B (Ciclo 10)
 
 
   ╭────────────────────────────────────────────────────────────────────────╮
@@ -10,11 +10,11 @@
   ╰────────────────────────────────────────────────────────────────────────╯   █
                                                                           △▽   █
  ╭────────────────────────────────────────────────────────────────────────────╮
- │ Get structured global news data in real time                 Ad [Report 3] │
- │ Integrate Webz.io's News API to query articles with precise filters a…     │
- │  Get Started  webz.io                                                      │
+ │ Ottieni $20 per provare Exa                                  Ad [Report 5] │
+ │ L'API di ricerca web per i tuoi agenti                                     │
+ │  Ottieni $20 di crediti  dashboard.exa.ai                                  │
  ╰────────────────────────────────────────────────────────────────────────────╯
- 35m left · 17.1K (13%)                                          ✕ End session
+ 32m left · 17.1K (13%)                                          ✕ End session
 ╭──────────────────────────────────────────────────────────────────────────────╮
 │                                                                              │
 │  ▍Enter a coding task or / for commands                                      │
