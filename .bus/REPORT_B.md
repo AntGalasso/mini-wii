@@ -1,4 +1,4 @@
-# Report estratto da Agente B (Ciclo 12)
+# Report estratto da Agente B (Ciclo 13)
 
 
   ╭────────────────────────────────────────────────────────────────────────╮
@@ -10,11 +10,11 @@
   ╰────────────────────────────────────────────────────────────────────────╯   █
                                                                           △▽   █
  ╭────────────────────────────────────────────────────────────────────────────╮
- │ Get structured global news data in real time                 Ad [Report 3] │
- │ Integrate Webz.io's News API to query articles with precise filters a…     │
- │  Get Started  webz.io                                                      │
+ │ Plan technical projects with MindManager                     Ad [Report 6] │
+ │ Turn your technical project plans into work with MindManager's visual…     │
+ │  Start Planning  mindmanager.sjv.io                                        │
  ╰────────────────────────────────────────────────────────────────────────────╯
- 25m left · 17.1K (13%)                                          ✕ End session
+ 22m left · 17.1K (13%)                                          ✕ End session
 ╭──────────────────────────────────────────────────────────────────────────────╮
 │                                                                              │
 │  ▍Enter a coding task or / for commands                                      │
