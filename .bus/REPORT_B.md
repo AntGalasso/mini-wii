@@ -1,4 +1,4 @@
-# Report estratto da Agente B (Ciclo 35)
+# Report estratto da Agente B (Ciclo 36)
 
 
   ╭────────────────────────────────────────────────────────────────────────╮
@@ -10,11 +10,11 @@
   ╰────────────────────────────────────────────────────────────────────────╯   █
                                                                           △▽   █
  ╭────────────────────────────────────────────────────────────────────────────╮
- │ Ottieni $20 per provare Exa                                 Ad [Report 21] │
- │ L'API di ricerca web per i tuoi agenti                                     │
- │  Ottieni $20 di crediti  dashboard.exa.ai                                  │
+ │ Diventa globale senza toccare il tuo JSX                    Ad [Report 23] │
+ │ Aggiungere lingue di solito significa refattorizzare i componenti e g…     │
+ │  Provalo gratis  weglot.com                                                │
  ╰────────────────────────────────────────────────────────────────────────────╯
- 19m left · 17.1K (13%)                                          ✕ End session
+ 16m left · 17.1K (13%)                                          ✕ End session
 ╭──────────────────────────────────────────────────────────────────────────────╮
 │                                                                              │
 │  ▍Enter a coding task or / for commands                                      │
