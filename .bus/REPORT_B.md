@@ -1,4 +1,4 @@
-# Report estratto da Agente B (Ciclo 99)
+# Report estratto da Agente B (Ciclo 100)
 
 
 
@@ -11,9 +11,9 @@
   ╰────────────────────────────────────────────────────────────────────────╯   █
                                                                           △▽   █
  ╭────────────────────────────────────────────────────────────────────────────╮
- │ Manage app servers with SPanel                              Ad [Report 62] │
- │ Automate your infrastructure management and deployments with SPanel's…     │
- │  Get Started  imp.scalahosting.com                                         │
+ │ Run coding agents on your existing AI subscriptions         Ad [Report 87] │
+ │ Run your coding agents and clients through one gateway with OpenLLM's…     │
+ │  Start Building  openllm.sh                                                │
  ╰────────────────────────────────────────────────────────────────────────────╯
 ╭──────────────────────────────────────────────────────────────────────────────╮
 │                                                                              │
