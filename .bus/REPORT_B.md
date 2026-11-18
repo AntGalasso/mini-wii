@@ -1,4 +1,4 @@
-# Report estratto da Agente B (Ciclo 27)
+# Report estratto da Agente B (Ciclo 28)
 
 
   ╭────────────────────────────────────────────────────────────────────────╮
@@ -10,11 +10,11 @@
   ╰────────────────────────────────────────────────────────────────────────╯   █
                                                                           △▽   █
  ╭────────────────────────────────────────────────────────────────────────────╮
- │ Build your app with OnSpace AI                              Ad [Report 17] │
- │ Automate your development workflow and build iOS, Android, and web pr…     │
- │  Start Building  onspaceai.sjv.io                                          │
+ │ Get structured global news data in real time                Ad [Report 19] │
+ │ Integrate Webz.io's News API to query articles with precise filters a…     │
+ │  Get Started  webz.io                                                      │
  ╰────────────────────────────────────────────────────────────────────────────╯
- 46m left · 17.1K (13%)                                          ✕ End session
+ 43m left · 17.1K (13%)                                          ✕ End session
 ╭──────────────────────────────────────────────────────────────────────────────╮
 │                                                                              │
 │  ▍Enter a coding task or / for commands                                      │
