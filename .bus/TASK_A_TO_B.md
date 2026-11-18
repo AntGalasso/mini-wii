@@ -1,4 +1,4 @@
-# Task estratto da Agente A (Ciclo 77)
+# Task estratto da Agente A (Ciclo 78)
 
 
 
@@ -11,9 +11,9 @@
   ╰────────────────────────────────────────────────────────────────────────╯   █
                                                                           △▽   █
  ╭────────────────────────────────────────────────────────────────────────────╮
- │ Metti la tua app online in un click                         Ad [Report 24] │
- │ Freebuff la crea e la ospita su un link freebuff.app.                      │
- │  Distribuisci app  freebuff.com                                            │
+ │ Send SMS, WhatsApp, and RCS via one API                     Ad [Report 27] │
+ │ Sent even has an MCP server to send messages from your agents, with $…     │
+ │  Claim $10 free credits  lp.sent.dm                                        │
  ╰────────────────────────────────────────────────────────────────────────────╯
 ╭──────────────────────────────────────────────────────────────────────────────╮
 │                                                                              │

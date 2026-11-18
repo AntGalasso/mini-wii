@@ -1,4 +1,4 @@
-# Report estratto da Agente B (Ciclo 77)
+# Report estratto da Agente B (Ciclo 78)
 
 
 
@@ -11,9 +11,9 @@
   ╰────────────────────────────────────────────────────────────────────────╯   █
                                                                           △▽   █
  ╭────────────────────────────────────────────────────────────────────────────╮
- │ Proxy infrastructure for developer QA                       Ad [Report 65] │
- │ Automate your testing workflows with IPRoyal's IP allowlists and prog…     │
- │  Start Testing  iproyal.com                                                │
+ │ Ti è stato chiesto di creare un tool per i costi?           Ad [Report 66] │
+ │ Costruisci su Costory, non da zero. Una dashboard FinOps è gratuita, …     │
+ │  Scopri di più  costory.io                                                 │
  ╰────────────────────────────────────────────────────────────────────────────╯
 ╭──────────────────────────────────────────────────────────────────────────────╮
 │                                                                              │
