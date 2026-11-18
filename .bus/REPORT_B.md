@@ -1,4 +1,4 @@
-# Report estratto da Agente B (Ciclo 30)
+# Report estratto da Agente B (Ciclo 31)
 
 
   ╭────────────────────────────────────────────────────────────────────────╮
@@ -10,11 +10,11 @@
   ╰────────────────────────────────────────────────────────────────────────╯   █
                                                                           △▽   █
  ╭────────────────────────────────────────────────────────────────────────────╮
- │ Get structured global news data in real time                 Ad [Report 8] │
- │ Integrate Webz.io's News API to query articles with precise filters a…     │
- │  Get Started  webz.io                                                      │
+ │ Mantieni gli agenti operativi online                        Ad [Report 22] │
+ │ Dedica meno tempo a risolvere crash e blocchi dei bot.                     │
+ │  Scopri di più  browserless.io                                             │
  ╰────────────────────────────────────────────────────────────────────────────╯
- 36m left · 17.1K (13%)                                          ✕ End session
+ 33m left · 17.1K (13%)                                          ✕ End session
 ╭──────────────────────────────────────────────────────────────────────────────╮
 │                                                                              │
 │  ▍Enter a coding task or / for commands                                      │
