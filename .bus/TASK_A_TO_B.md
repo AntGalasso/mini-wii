@@ -1,4 +1,4 @@
-# Task estratto da Agente A (Ciclo 81)
+# Task estratto da Agente A (Ciclo 82)
 
 
 
@@ -11,9 +11,9 @@
   ╰────────────────────────────────────────────────────────────────────────╯   █
                                                                           △▽   █
  ╭────────────────────────────────────────────────────────────────────────────╮
- │ Send SMS, WhatsApp, and RCS via one API                     Ad [Report 37] │
- │ Sent gives you $10 in free credits to send SMS, WhatsApp, and RCS. Pa…     │
- │  Claim $10 free credits  lp.sent.dm                                        │
+ │ Prova Exa Web Search API                                    Ad [Report 40] │
+ │ Risparmia fino al 95% dei token di ricerca web del tuo agente con Exa      │
+ │  Prova Exa search  exa.ai                                                  │
  ╰────────────────────────────────────────────────────────────────────────────╯
 ╭──────────────────────────────────────────────────────────────────────────────╮
 │                                                                              │
