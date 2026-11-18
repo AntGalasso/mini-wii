@@ -1,19 +1,19 @@
-# Task estratto da Agente A (Ciclo 56)
+# Task estratto da Agente A (Ciclo 57)
 
 
 
   ╭────────────────────────────────────────────────────────────────────────╮
   │ Error                                                                  │
-  │ This model purchase was refunded to the daily pool or wallet that paid │
-  │ for it. Start a new session to try again. The model may be busy or     │
-  │ unavailable right now: send your message again to retry, or pick       │   ▄
-  │ another model with /model.                                             │   █
+  │ Freebuff did not send this message to the model. It breaks the usage   │
+  │ policy (Scripted or automated use): it is the same message sent over   │
+  │ and over, or automated account or site farming. It counts as strike 6  │   ▄
+  │ today. Strikes reset at midnight, when your daily hours refill.        │   █
   ╰────────────────────────────────────────────────────────────────────────╯   █
                                                                           △▽   █
  ╭────────────────────────────────────────────────────────────────────────────╮
- │ Live chat, email, una bacheca feedback e molto altro …      Ad [Report 42] │
- │ SupDesk raccoglie tutti gli strumenti di cui hai bisogno per lavorare      │
- │  Scopri SupDesk  supdesk.app                                               │
+ │ Integrate support workflows with SparrowDesk                Ad [Report 43] │
+ │ Orchestrate complex workflows and automate technical tasks with Sparr…     │
+ │  Try SparrowDesk  sparrowdesk.com                                          │
  ╰────────────────────────────────────────────────────────────────────────────╯
 ╭──────────────────────────────────────────────────────────────────────────────╮
 │                                                                              │
