@@ -1,4 +1,4 @@
-# Report estratto da Agente B (Ciclo 95)
+# Report estratto da Agente B (Ciclo 96)
 
 
 
@@ -11,9 +11,9 @@
   ╰────────────────────────────────────────────────────────────────────────╯   █
                                                                           △▽   █
  ╭────────────────────────────────────────────────────────────────────────────╮
- │ Build and preview web apps with Bolt.new                    Ad [Report 83] │
- │ Automate your development workflow by connecting GitHub and publishin…     │
- │  Start Building  boltai.pxf.io                                             │
+ │ Ti è stato chiesto di creare un tool per i costi?           Ad [Report 53] │
+ │ Costruisci su Costory, non da zero. Una dashboard FinOps è gratuita, …     │
+ │  Scopri di più  costory.io                                                 │
  ╰────────────────────────────────────────────────────────────────────────────╯
 ╭──────────────────────────────────────────────────────────────────────────────╮
 │                                                                              │
