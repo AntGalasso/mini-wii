@@ -100,7 +100,8 @@ JS inline: sintassi valida (668 righe)
 ```
 
 ## Problemi aperti / note
-- Il push verso `origin main` è stato eseguito; esito riportato qui sotto dopo il commit.
+- Commit `ebc0838` ("feat: step completato") e `git push origin main` completati con successo:
+  `357e010..ebc0838  main -> main` (exit 0).
 - Il QR richiede che il telefono raggiunga l'host usato per aprire `/tv`: se si apre la TV da
   `127.0.0.1`, il QR conterrà `127.0.0.1` e non sarà raggiungibile dal telefono. Comportamento
   corretto rispetto al requisito "mai hardcoded": conviene aprire `/tv` dall'IP LAN del PC.
