@@ -1,4 +1,4 @@
-# Task estratto da Agente A (Ciclo 70)
+# Task estratto da Agente A (Ciclo 71)
 
 
   ╭────────────────────────────────────────────────────────────────────────╮
@@ -10,11 +10,11 @@
   ╰────────────────────────────────────────────────────────────────────────╯   █
                                                                           △▽   █
  ╭────────────────────────────────────────────────────────────────────────────╮
- │ React multilingua, a un npm install di distanza             Ad [Report 55] │
- │ Aggiungere una nuova lingua non dovrebbe essere una maratona. Esegui …     │
- │  Provalo gratis  weglot.com                                                │
+ │ Ottieni $20 per provare Exa                                 Ad [Report 58] │
+ │ L'API di ricerca web per i tuoi agenti                                     │
+ │  Ottieni $20 di crediti  dashboard.exa.ai                                  │
  ╰────────────────────────────────────────────────────────────────────────────╯
- 17m left · 17.1K (13%)                                          ✕ End session
+ 14m left · 17.1K (13%)                                          ✕ End session
 ╭──────────────────────────────────────────────────────────────────────────────╮
 │                                                                              │
 │  ▍Enter a coding task or / for commands                                      │
