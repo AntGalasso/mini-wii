@@ -1,4 +1,4 @@
-# Report estratto da Agente B (Ciclo 34)
+# Report estratto da Agente B (Ciclo 35)
 
 
   ╭────────────────────────────────────────────────────────────────────────╮
@@ -10,11 +10,11 @@
   ╰────────────────────────────────────────────────────────────────────────╯   █
                                                                           △▽   █
  ╭────────────────────────────────────────────────────────────────────────────╮
- │ SupDesk: Assistenza clienti per piccoli team                Ad [Report 24] │
- │ Gestisci email di supporto, live chat e feedback dei clienti in un un…     │
- │  Scopri SupDesk  supdesk.app                                               │
+ │ Ottieni $20 per provare Exa                                 Ad [Report 21] │
+ │ L'API di ricerca web per i tuoi agenti                                     │
+ │  Ottieni $20 di crediti  dashboard.exa.ai                                  │
  ╰────────────────────────────────────────────────────────────────────────────╯
- 22m left · 17.1K (13%)                                          ✕ End session
+ 19m left · 17.1K (13%)                                          ✕ End session
 ╭──────────────────────────────────────────────────────────────────────────────╮
 │                                                                              │
 │  ▍Enter a coding task or / for commands                                      │

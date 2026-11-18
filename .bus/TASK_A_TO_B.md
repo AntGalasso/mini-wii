@@ -1,4 +1,4 @@
-# Task estratto da Agente A (Ciclo 34)
+# Task estratto da Agente A (Ciclo 35)
 
 
   ╭────────────────────────────────────────────────────────────────────────╮
@@ -10,11 +10,11 @@
   ╰────────────────────────────────────────────────────────────────────────╯   █
                                                                           △▽   █
  ╭────────────────────────────────────────────────────────────────────────────╮
- │ Accesso via browser per agenti IA                           Ad [Report 23] │
- │ Esegui attività web senza gestire Chrome.                                  │
- │  Scopri di più  browserless.io                                             │
+ │ Ottieni $20 per provare Exa                                  Ad [Report 8] │
+ │ L'API di ricerca web per i tuoi agenti                                     │
+ │  Ottieni $20 di crediti  dashboard.exa.ai                                  │
  ╰────────────────────────────────────────────────────────────────────────────╯
- 24m left · 17.1K (13%)                                          ✕ End session
+ 21m left · 17.1K (13%)                                          ✕ End session
 ╭──────────────────────────────────────────────────────────────────────────────╮
 │                                                                              │
 │  ▍Enter a coding task or / for commands                                      │
