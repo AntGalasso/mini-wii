@@ -1,4 +1,4 @@
-# Report estratto da Agente B (Ciclo 20)
+# Report estratto da Agente B (Ciclo 21)
 
 
 
@@ -11,9 +11,9 @@
   ╰────────────────────────────────────────────────────────────────────────╯   █
                                                                           △▽   █
  ╭────────────────────────────────────────────────────────────────────────────╮
- │ Get structured global news data in real time                Ad [Report 10] │
- │ Integrate Webz.io's News API to query articles with precise filters a…     │
- │  Get Started  webz.io                                                      │
+ │ Unify SMS, WhatsApp, and RCS with one API                   Ad [Report 12] │
+ │ Go from npm install to delivered message in five lines of code with S…     │
+ │  Start building  lp.sent.dm                                                │
  ╰────────────────────────────────────────────────────────────────────────────╯
 ╭──────────────────────────────────────────────────────────────────────────────╮
 │                                                                              │
