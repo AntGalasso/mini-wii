@@ -1,19 +1,19 @@
-# Report estratto da Agente B (Ciclo 88)
+# Report estratto da Agente B (Ciclo 89)
 
 
 
   ╭────────────────────────────────────────────────────────────────────────╮
   │ Error                                                                  │
-  │ Freebuff did not send this message to the model. It breaks the usage   │
-  │ policy (Scripted or automated use): it is the same message sent over   │
-  │ and over, or automated account or site farming. It counts as strike 8  │
-  │ today. Strikes reset at midnight, when your daily hours refill.        │   █
+  │ This model purchase was refunded to the daily pool or wallet that paid │
+  │ for it. Start a new session to try again. The model may be busy or     │
+  │ unavailable right now: send your message again to retry, or pick       │
+  │ another model with /model.                                             │   █
   ╰────────────────────────────────────────────────────────────────────────╯   █
                                                                           △▽   █
  ╭────────────────────────────────────────────────────────────────────────────╮
- │ Proxy infrastructure for developer QA                       Ad [Report 76] │
- │ Automate your testing workflows with IPRoyal's IP allowlists and prog…     │
- │  Start Testing  iproyal.com                                                │
+ │ Build and preview web apps with Bolt.new                    Ad [Report 27] │
+ │ Streamline your development workflow by connecting GitHub and publish…     │
+ │  Start Building  boltai.pxf.io                                             │
  ╰────────────────────────────────────────────────────────────────────────────╯
 ╭──────────────────────────────────────────────────────────────────────────────╮
 │                                                                              │
