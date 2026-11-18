@@ -1,4 +1,4 @@
-# Report estratto da Agente B (Ciclo 52)
+# Report estratto da Agente B (Ciclo 53)
 
 
 
@@ -11,9 +11,9 @@
   ╰────────────────────────────────────────────────────────────────────────╯   █
                                                                           △▽   █
  ╭────────────────────────────────────────────────────────────────────────────╮
- │ Ottieni $20 per provare Exa                                  Ad [Report 5] │
- │ L'API di ricerca web per i tuoi agenti                                     │
- │  Ottieni $20 di crediti  dashboard.exa.ai                                  │
+ │ Get structured global news data in real time                 Ad [Report 8] │
+ │ Integrate Webz.io's News API to query articles with precise filters a…     │
+ │  Get Started  webz.io                                                      │
  ╰────────────────────────────────────────────────────────────────────────────╯
 ╭──────────────────────────────────────────────────────────────────────────────╮
 │                                                                              │
