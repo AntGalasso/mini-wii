@@ -1,4 +1,4 @@
-# Task estratto da Agente A (Ciclo 62)
+# Task estratto da Agente A (Ciclo 63)
 
 
   ╭────────────────────────────────────────────────────────────────────────╮
@@ -10,11 +10,11 @@
   ╰────────────────────────────────────────────────────────────────────────╯   █
                                                                           △▽   █
  ╭────────────────────────────────────────────────────────────────────────────╮
- │ Prova Exa e ottieni $20 di crediti API                      Ad [Report 52] │
- │ L'API di ricerca web Exa recupera i dati migliori e in tempo reale pe…     │
- │  Richiedi $20 di crediti  dashboard.exa.ai                                 │
+ │ Send SMS, WhatsApp, and RCS via one API                     Ad [Report 33] │
+ │ Automate your multi-agent workflows with Sent's single API for seamle…     │
+ │  Get Started  lp.sent.dm                                                   │
  ╰────────────────────────────────────────────────────────────────────────────╯
- 44m left · 17.1K (13%)                                          ✕ End session
+ 41m left · 17.1K (13%)                                          ✕ End session
 ╭──────────────────────────────────────────────────────────────────────────────╮
 │                                                                              │
 │  ▍Enter a coding task or / for commands                                      │
