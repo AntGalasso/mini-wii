@@ -1,4 +1,4 @@
-# Report estratto da Agente B (Ciclo 59)
+# Report estratto da Agente B (Ciclo 60)
 
 
 
@@ -11,9 +11,9 @@
   ╰────────────────────────────────────────────────────────────────────────╯   █
                                                                           △▽   █
  ╭────────────────────────────────────────────────────────────────────────────╮
- │ Integrate support workflows with SparrowDesk                Ad [Report 44] │
- │ Automate complex workflows and support with SparrowDesk AI agents and…     │
- │  Try SparrowDesk  sparrowdesk.com                                          │
+ │ SupDesk: Assistenza clienti per piccoli team                Ad [Report 24] │
+ │ Gestisci email di supporto, live chat e feedback dei clienti in un un…     │
+ │  Scopri SupDesk  supdesk.app                                               │
  ╰────────────────────────────────────────────────────────────────────────────╯
 ╭──────────────────────────────────────────────────────────────────────────────╮
 │                                                                              │
