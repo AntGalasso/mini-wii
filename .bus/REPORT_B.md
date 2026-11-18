@@ -1,4 +1,4 @@
-# Report estratto da Agente B (Ciclo 84)
+# Report estratto da Agente B (Ciclo 85)
 
 
 
@@ -11,9 +11,9 @@
   ╰────────────────────────────────────────────────────────────────────────╯   █
                                                                           △▽   █
  ╭────────────────────────────────────────────────────────────────────────────╮
- │ Proxy infrastructure for developer QA                       Ad [Report 65] │
- │ Automate your testing workflows with IPRoyal's IP allowlists and prog…     │
- │  Start Testing  iproyal.com                                                │
+ │ Ottieni $20 per provare Exa                                 Ad [Report 68] │
+ │ L'API di ricerca web per i tuoi agenti                                     │
+ │  Ottieni $20 di crediti  dashboard.exa.ai                                  │
  ╰────────────────────────────────────────────────────────────────────────────╯
 ╭──────────────────────────────────────────────────────────────────────────────╮
 │                                                                              │
