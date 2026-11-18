@@ -1,19 +1,19 @@
-# Report estratto da Agente B (Ciclo 98)
+# Report estratto da Agente B (Ciclo 99)
 
 
 
   ╭────────────────────────────────────────────────────────────────────────╮
   │ Error                                                                  │
-  │ Freebuff did not send this message to the model. It breaks the usage   │
-  │ policy (Scripted or automated use): it is the same message sent over   │
-  │ and over, or automated account or site farming. It counts as strike 8  │
-  │ today. Strikes reset at midnight, when your daily hours refill.        │   █
+  │ This model purchase was refunded to the daily pool or wallet that paid │
+  │ for it. Start a new session to try again. The model may be busy or     │
+  │ unavailable right now: send your message again to retry, or pick       │
+  │ another model with /model.                                             │   █
   ╰────────────────────────────────────────────────────────────────────────╯   █
                                                                           △▽   █
  ╭────────────────────────────────────────────────────────────────────────────╮
- │ Get structured global news data in real time                Ad [Report 86] │
- │ Automate your news workflows with Webz.io’s real-time API for structu…     │
- │  Get Started  webz.io                                                      │
+ │ Manage app servers with SPanel                              Ad [Report 62] │
+ │ Automate your infrastructure management and deployments with SPanel's…     │
+ │  Get Started  imp.scalahosting.com                                         │
  ╰────────────────────────────────────────────────────────────────────────────╯
 ╭──────────────────────────────────────────────────────────────────────────────╮
 │                                                                              │

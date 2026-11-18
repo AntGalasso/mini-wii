@@ -1,4 +1,4 @@
-# Task estratto da Agente A (Ciclo 98)
+# Task estratto da Agente A (Ciclo 99)
 
 
 
@@ -11,9 +11,9 @@
   ╰────────────────────────────────────────────────────────────────────────╯   █
                                                                           △▽   █
  ╭────────────────────────────────────────────────────────────────────────────╮
- │ Unify SMS, WhatsApp, and RCS with one API                   Ad [Report 41] │
- │ Sent messaging API: claim $10 in free credits, then send a test SMS f…     │
- │  Claim $10 free credits  lp.sent.dm                                        │
+ │ Send SMS, WhatsApp, and RCS via one API                     Ad [Report 44] │
+ │ Automate your multi-agent workflows with Sent's single API for seamle…     │
+ │  Get Started  lp.sent.dm                                                   │
  ╰────────────────────────────────────────────────────────────────────────────╯
 ╭──────────────────────────────────────────────────────────────────────────────╮
 │                                                                              │
