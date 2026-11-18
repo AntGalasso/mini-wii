@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#060b12">
+<title>Mini-Wii — Schermo TV</title>
+<style>
+  :root {
+    --ink: #eaf4ff;
+    --muted: #8fa6bb;
+    --panel: rgba(14, 26, 40, .78);
+    --panel-edge: rgba(122, 190, 240, .18);
+    --accent: #7fe3ff;
+    --ok: #38e08a;
+    --warn: #f3b23c;
+    --bad: #ff6b62;
+  }
+
+  * { box-sizing: border-box; }
+
+  [hidden] { display: none !important; }
+
+  html, body {
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+    background: #060b12;
+  }
+
+  body {
+    color: var(--ink);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+
+  #stage {
+    position: fixed;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 50% 45%, #0d1b2b 0%, #070e18 58%, #04080e 100%);
+  }
+
+  /* ------------------------------- HUD top ------------------------------- */
+
+  .hud-top {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    padding: max(16px, env(safe-area-inset-top)) 20px 0;
+    pointer-events: none;
+  }
+
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border: 1px solid var(--panel-edge);
+    border-radius: 999px;
+    background: var(--panel);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, .35);
+    font-size: 14px;
+    letter-spacing: .2px;
+  }
+
+  .status-dot {
+    width: 9px;
+    height: 9px;
+    flex: none;
+    border-radius: 50%;
+    background: var(--muted);
+    box-shadow: 0 0 0 3px rgba(143, 166, 187, .16);
+  }
+
+  .status-dot[data-state="online"] {
+    background: var(--ok);
+    box-shadow: 0 0 0 3px rgba(56, 224, 138, .18), 0 0 12px rgba(56, 224, 138, .7);
+  }
+
+  .status-dot[data-state="waiting"] {
+    background: var(--warn);
+    box-shadow: 0 0 0 3px rgba(243, 178, 60, .18);
+    animation: blink 1.4s ease-in-out infinite;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: .35; }
+  }
+
+  .status-label { font-weight: 600; }
+
+  .status-count {
+    padding: 3px 8px;
+    border-radius: 999px;
+    background: rgba(127, 227, 255, .12);
+    color: var(--accent);
+    font: 600 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+
+  /* ---------------------------- controller list ---------------------------- */
+
+  .controller-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    pointer-events: none;
+  }
+
+  .controller-item {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    min-width: 210px;
+    padding: 8px 12px;
+    border: 1px solid var(--panel-edge);
+    border-radius: 12px;
+    background: var(--panel);
+    backdrop-filter: blur(8px);
+    font-size: 13px;
+    opacity: .92;
+  }
+
+  .controller-item[data-active="true"] {
+    border-color: rgba(127, 227, 255, .5);
+    background: rgba(20, 44, 62, .82);
+    box-shadow: 0 0 18px rgba(127, 227, 255, .12);
+  }
+
+  .controller-item[data-inactive="true"] { opacity: .5; }
+
+  .controller-dot {
+    width: 11px;
+    height: 11px;
+    flex: none;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 10px currentColor;
+  }
+
+  .controller-name {
+    flex: 1;
+    overflow: hidden;
+    font-weight: 600;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .controller-meta {
+    flex: none;
+    color: var(--muted);
+    font: 500 11px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+
+  .controller-more {
+    padding: 4px 12px;
+    color: var(--muted);
+    font-size: 13px;
+  }
+
+  /* ------------------------------ pairing card ------------------------------ */
+
+  .pairing {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    width: min(92vw, 460px);
+    max-height: calc(100vh - 160px);
+    padding: 26px 28px 24px;
+    border: 1px solid var(--panel-edge);
+    border-radius: 26px;
+    background: linear-gradient(180deg, rgba(18, 34, 51, .94), rgba(8, 16, 26, .94));
+    box-shadow: 0 30px 80px rgba(0, 0, 0, .6), inset 0 1px 0 rgba(255, 255, 255, .05);
+    transform: translate(-50%, -50%);
+    text-align: center;
+    overflow: auto;
+  }
+
+  .pairing h1 {
+    margin: 0;
+    font-size: clamp(22px, 3.4vw, 34px);
+    font-weight: 800;
+    letter-spacing: .5px;
+  }
+
+  .pairing-lead {
+    margin: -6px 0 0;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.45;
+  }
+
+  .qr-frame {
+    display: grid;
+    place-items: center;
+    width: min(58vw, 210px);
+    height: min(58vw, 210px);
+    padding: 10px;
+    border-radius: 18px;
+    background: #ffffff;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, .45);
+  }
+
+  .qr-frame img {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .pair-url {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid rgba(127, 227, 255, .28);
+    border-radius: 14px;
+    background: rgba(4, 12, 20, .72);
+    color: var(--accent);
+    font: 600 clamp(15px, 2.2vw, 20px)/1.3 ui-monospace, SFMono-Regular, Menlo, monospace;
+    letter-spacing: .4px;
+    overflow-wrap: anywhere;
+    -webkit-user-select: all;
+    user-select: all;
+  }
+
+  .pairing-note {
+    margin: 0;
+    color: var(--muted);
+    font-size: 12.5px;
+    line-height: 1.5;
+  }
+
+  .pairing-note b { color: var(--ink); font-weight: 600; }
+
+  .pairing-mini {
+    position: fixed;
+    left: 20px;
+    bottom: 96px;
+    padding: 9px 14px;
+    border: 1px solid var(--panel-edge);
+    border-radius: 999px;
+    background: var(--panel);
+    color: var(--ink);
+    font: 600 13px/1 system-ui, sans-serif;
+    cursor: pointer;
+    backdrop-filter: blur(8px);
+  }
+
+  .pairing-mini:hover { border-color: rgba(127, 227, 255, .5); }
+
+  /* ------------------------------- HUD bottom ------------------------------- */
+
+  .hud-bottom {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 0 22px max(16px, env(safe-area-inset-bottom));
+    pointer-events: none;
+  }
+
+  .hint {
+    overflow: hidden;
+    color: var(--muted);
+    font-size: 13.5px;
+    letter-spacing: .2px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .hint b {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  .kpi {
+    display: flex;
+    flex: none;
+    gap: 8px;
+    font: 500 12px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+
+  .kpi span {
+    padding: 7px 10px;
+    border: 1px solid var(--panel-edge);
+    border-radius: 9px;
+    background: var(--panel);
+    color: var(--muted);
+  }
+
+  .kpi b { color: var(--ink); font-weight: 600; }
+
+  @media (max-width: 720px) {
+    .controller-list { display: none; }
+    .hud-bottom { flex-direction: column; align-items: flex-start; gap: 8px; }
+    .pairing { padding: 20px; gap: 12px; }
+  }
+</style>
+</head>
+<body>
+<canvas id="stage" aria-hidden="true"></canvas>
+
+<header class="hud-top">
+  <div class="status" role="status" aria-live="polite">
+    <span class="status-dot" id="statusDot" data-state="waiting"></span>
+    <span class="status-label" id="statusLabel">connessione…</span>
+    <span class="status-count" id="statusCount">0 telefoni</span>
+  </div>
+  <ul class="controller-list" id="controllerList" aria-label="Telecomandi collegati"></ul>
+</header>
+
+<section class="pairing" id="pairingPanel" aria-labelledby="pairingTitle">
+  <h1 id="pairingTitle">Mini-Wii</h1>
+  <p class="pairing-lead">Inquadra il QR con la fotocamera oppure apri l'indirizzo sul telefono.</p>
+  <div class="qr-frame">
+    <img id="qrImage" alt="Codice QR per aprire il telecomando sul telefono">
+  </div>
+  <div class="pair-url" id="pairUrl">…</div>
+  <p class="pairing-note">
+    Telefono e PC sulla <b>stessa rete Wi-Fi</b> • telefono in verticale<br>
+    Giroscopio: serve una connessione <b>HTTPS</b>; su HTTP resta il touch-pad
+  </p>
+</section>
+
+<button class="pairing-mini" id="pairingMini" type="button" hidden>QR / istruzioni</button>
+
+<footer class="hud-bottom">
+  <div class="hint">
+    <b>Muovi il Wiimote</b> • A/B • Calibra per ricentrare — <b>F</b> schermo intero • <b>C</b> centra
+  </div>
+  <div class="kpi">
+    <span>FPS <b id="fpsValue">–</b></span>
+    <span>Δt <b id="latencyValue">–</b></span>
+  </div>
+</footer>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+(() => {
+  'use strict';
+
+  /* ------------------------------- elementi ------------------------------- */
+
+  const canvas = document.getElementById('stage');
+  const ctx = canvas.getContext('2d', { alpha: false });
+
+  const statusDot = document.getElementById('statusDot');
+  const statusLabel = document.getElementById('statusLabel');
+  const statusCount = document.getElementById('statusCount');
+  const listEl = document.getElementById('controllerList');
+  const pairingPanel = document.getElementById('pairingPanel');
+  const pairingMini = document.getElementById('pairingMini');
+  const qrImage = document.getElementById('qrImage');
+  const pairUrlEl = document.getElementById('pairUrl');
+  const fpsValue = document.getElementById('fpsValue');
+  const latencyValue = document.getElementById('latencyValue');
+
+  /* ------------------------------- pairing ------------------------------- */
+
+  const controllerUrl = location.protocol + '//' + location.host + '/controller';
+  pairUrlEl.textContent = controllerUrl;
+  qrImage.src = '/qr?url=' + encodeURIComponent(controllerUrl);
+
+  let pairingOpen = true;
+
+  function applyPairing() {
+    const hasControllers = controllers.size > 0;
+    const expanded = hasControllers ? pairingOpen : true;
+    pairingPanel.hidden = !expanded;
+    pairingMini.hidden = !hasControllers || expanded;
+  }
+
+  /* -------------------------------- stato -------------------------------- */
+
+  const view = { w: window.innerWidth, h: window.innerHeight, dpr: 1 };
+  const controllers = new Map(); // id -> { id, name, connectedAt, lastMotionAt, lastPacketAt, angles }
+  let activeId = null;
+
+  const aim = {
+    pos: { x: view.w / 2, y: view.h / 2 },
+    target: { x: view.w / 2, y: view.h / 2 },
+    alphaRef: 0,
+    betaRef: 0,
+    hasRef: false,
+    lastMotionAt: performance.now(),
+    lastTrailAt: 0,
+    pulseUntil: 0,
+    color: '#7fe3ff',
+    opacity: 1,
+    trail: [],
+  };
+
+  let listSignature = '';
+  const metaNodes = new Map(); // id -> nodo meta da aggiornare
+  let initialized = false;
+
+  /* -------------------------------- helper -------------------------------- */
+
+  function num(value) {
+    const n = Number(value);
+    return Number.isFinite(n) ? n : null;
+  }
+
+  function clamp(value, min, max) {
+    return Math.max(min, Math.min(max, value));
+  }
+
+  function shortestAngle(deg) {
+    return ((deg + 540) % 360) - 180;
+  }
+
+  function hueForId(id) {
+    let hash = 2166136261;
+    for (let i = 0; i < id.length; i += 1) {
+      hash ^= id.charCodeAt(i);
+      hash = Math.imul(hash, 16777619);
+    }
+    return Math.abs(hash) % 360;
+  }
+
+  function colorForId(id) {
+    return 'hsl(' + hueForId(id) + ' 92% 68%)';
+  }
+
+  function cleanName(raw) {
+    if (raw === undefined || raw === null) return 'Wiimote';
+    const value = String(raw).slice(0, 24).trim();
+    return value || 'Wiimote';
+  }
+
+  function centerAim(immediate) {
+    aim.target.x = view.w / 2;
+    aim.target.y = view.h / 2;
+    if (immediate) {
+      aim.pos.x = aim.target.x;
+      aim.pos.y = aim.target.y;
+    }
+  }
+
+  function clampAim() {
+    const margin = Math.min(64, Math.min(view.w, view.h) * 0.12);
+    aim.target.x = clamp(aim.target.x, margin, Math.max(margin, view.w - margin));
+    aim.target.y = clamp(aim.target.y, margin, Math.max(margin, view.h - margin));
+    aim.pos.x = clamp(aim.pos.x, margin, Math.max(margin, view.w - margin));
+    aim.pos.y = clamp(aim.pos.y, margin, Math.max(margin, view.h - margin));
+  }
+
+  /* -------------------------------- resize -------------------------------- */
+
+  let resizeQueued = false;
+
+  function scheduleResize() {
+    if (resizeQueued) return;
+    resizeQueued = true;
+    requestAnimationFrame(() => {
+      resizeQueued = false;
+      resize();
+    });
+  }
+
+  function resize() {
+    const dpr = clamp(window.devicePixelRatio || 1, 1, 3);
+    view.w = Math.max(1, window.innerWidth);
+    view.h = Math.max(1, window.innerHeight);
+    view.dpr = dpr;
+
+    canvas.width = Math.round(view.w * dpr);
+    canvas.height = Math.round(view.h * dpr);
+    canvas.style.width = view.w + 'px';
+    canvas.style.height = view.h + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    if (!initialized) {
+      initialized = true;
+      centerAim(true);
+    } else {
+      clampAim();
+    }
+
+    aim.trail.length = 0;
+    draw(performance.now());
+  }
+
+  window.addEventListener('resize', scheduleResize);
+  window.addEventListener('orientationchange', scheduleResize);
+
+  /* ------------------------------ controller ------------------------------ */
+
+  function isStale(record, now) {
+    return !record.lastMotionAt || now - record.lastMotionAt > 5000;
+  }
+
+  function sortedControllers() {
+    return Array.from(controllers.values()).sort(
+      (a, b) => (a.connectedAt || 0) - (b.connectedAt || 0)
+    );
+  }
+
+  function renderList() {
+    const now = performance.now();
+    const all = sortedControllers();
+    const signature =
+      all
+        .map((record) => record.id + ':' + record.name + ':' + (isStale(record, now) ? 1 : 0))
+        .join('|') +
+      '#' +
+      String(activeId) +
+      '#' +
+      all.length;
+
+    if (signature === listSignature) return;
+    listSignature = signature;
+    metaNodes.clear();
+    listEl.textContent = '';
+
+    const visible = all.slice(0, 4);
+    for (const record of visible) {
+      const item = document.createElement('li');
+      item.className = 'controller-item';
+      item.dataset.active = String(record.id === activeId);
+      item.dataset.inactive = String(isStale(record, now));
+
+      const dot = document.createElement('span');
+      dot.className = 'controller-dot';
+      dot.style.background = colorForId(record.id);
+      dot.style.color = colorForId(record.id);
+
+      const name = document.createElement('span');
+      name.className = 'controller-name';
+      name.textContent = record.name;
+
+      const meta = document.createElement('span');
+      meta.className = 'controller-meta';
+      meta.textContent = metaText(record, now);
+
+      metaNodes.set(record.id, meta);
+      item.append(dot, name, meta);
+      listEl.append(item);
+    }
+
+    if (all.length > visible.length) {
+      const more = document.createElement('li');
+      more.className = 'controller-more';
+      more.textContent = '… +' + (all.length - visible.length);
+      listEl.append(more);
+    }
+  }
+
+  function metaText(record, now) {
+    if (!record.lastMotionAt) return 'in attesa';
+    const age = Math.max(0, Math.round(now - record.lastMotionAt));
+    return isStale(record, now) ? 'inattivo · ' + age + ' ms' : age + ' ms';
+  }
+
+  function refreshAges() {
+    const now = performance.now();
+    for (const [id, node] of metaNodes) {
+      const record = controllers.get(id);
+      if (record) node.textContent = metaText(record, now);
+    }
+  }
+
+  function updatePresence() {
+    statusCount.textContent =
+      controllers.size + (controllers.size === 1 ? ' telefono' : ' telefoni');
+    renderList();
+    applyPairing();
+  }
+
+  function setActive(id) {
+    if (activeId === id) return;
+    activeId = id;
+    const record = controllers.get(id);
+    aim.color = colorForId(id);
+    if (record && record.angles) {
+      aim.alphaRef = record.angles.alpha;
+      aim.betaRef = record.angles.beta;
+      aim.hasRef = true;
+    } else {
+      aim.hasRef = false;
+    }
+    centerAim(false);
+    renderList();
+  }
+
+  function syncControllers(list) {
+    if (!Array.isArray(list)) return;
+    const seen = new Set();
+
+    for (const entry of list) {
+      if (!entry || typeof entry.id !== 'string' || !entry.id) continue;
+      seen.add(entry.id);
+      let record = controllers.get(entry.id);
+      if (!record) {
+        record = {
+          id: entry.id,
+          name: cleanName(entry.name),
+          connectedAt: num(entry.connectedAt) || Date.now(),
+          lastMotionAt: 0,
+          lastPacketAt: 0,
+          angles: null,
+        };
+        controllers.set(entry.id, record);
+      } else {
+        record.name = cleanName(entry.name);
+      }
+    }
+
+    for (const id of Array.from(controllers.keys())) {
+      if (!seen.has(id)) controllers.delete(id);
+    }
+
+    if (activeId && !controllers.has(activeId)) {
+      activeId = null;
+      aim.hasRef = false;
+      aim.color = '#7fe3ff';
+    }
+
+    updatePresence();
+  }
+
+  /* ------------------------------- eventi TV ------------------------------- */
+
+  function onMotion(payload) {
+    if (!payload || typeof payload.id !== 'string') return;
+    const alpha = num(payload.alpha);
+    const beta = num(payload.beta);
+    if (alpha === null || beta === null) return;
+
+    const now = performance.now();
+    let record = controllers.get(payload.id);
+    if (!record) {
+      record = {
+        id: payload.id,
+        name: 'Wiimote',
+        connectedAt: Date.now(),
+        lastMotionAt: 0,
+        lastPacketAt: 0,
+        angles: null,
+      };
+      controllers.set(payload.id, record);
+    }
+
+    if (record.lastPacketAt) {
+      const delta = now - record.lastPacketAt;
+      if (Number.isFinite(delta) && delta >= 0 && delta < 10000) {
+        latencyValue.textContent = Math.round(delta) + ' ms';
+      }
+    }
+    record.lastPacketAt = now;
+    record.lastMotionAt = now;
+    record.angles = { alpha, beta };
+
+    if (payload.id !== activeId) {
+      setActive(payload.id);
+    }
+    if (!aim.hasRef) {
+      aim.alphaRef = alpha;
+      aim.betaRef = beta;
+      aim.hasRef = true;
+    }
+
+    const pxPerDegree = (Math.min(view.w, view.h) * 0.4) / 30;
+    const dx = shortestAngle(alpha - aim.alphaRef);
+    const dy = beta - aim.betaRef;
+
+    aim.target.x = view.w / 2 + dx * pxPerDegree;
+    aim.target.y = view.h / 2 + dy * pxPerDegree;
+    aim.lastMotionAt = now;
+    clampAim();
+  }
+
+  function onButton(payload) {
+    if (!payload || typeof payload.id !== 'string') return;
+    if (!controllers.has(payload.id)) return;
+    if (payload.state === 'down') {
+      aim.pulseUntil = performance.now() + 320;
+    }
+    setActive(payload.id);
+  }
+
+  function onCalibrate(payload) {
+    if (!payload || typeof payload.id !== 'string') return;
+    const record = controllers.get(payload.id);
+    if (!record) return;
+
+    setActive(payload.id);
+    if (record.angles) {
+      aim.alphaRef = record.angles.alpha;
+      aim.betaRef = record.angles.beta;
+      aim.hasRef = true;
+    }
+    centerAim(false);
+    aim.pulseUntil = performance.now() + 420;
+  }
+
+  /* -------------------------------- socket -------------------------------- */
+
+  function setConnection(state) {
+    statusDot.dataset.state = state;
+    if (state === 'online') {
+      statusLabel.textContent = 'connesso';
+    } else if (state === 'waiting') {
+      statusLabel.textContent = 'connessione…';
+    } else {
+      statusLabel.textContent = 'riconnessione…';
+    }
+  }
+
+  const socket = io({
+    reconnection: true,
+    reconnectionDelay: 400,
+    reconnectionDelayMax: 3000,
+    reconnectionAttempts: Infinity,
+    timeout: 8000,
+  });
+
+  socket.on('connect', () => {
+    setConnection('online');
+    socket.emit('tv:hello', {});
+  });
+
+  socket.on('disconnect', () => setConnection('reconnect'));
+  socket.on('connect_error', () => setConnection('reconnect'));
+
+  socket.on('tv:ready', (payload) => {
+    if (payload && Array.isArray(payload.controllers)) {
+      syncControllers(payload.controllers);
+    }
+  });
+
+  socket.on('tv:controller_list', (payload) => {
+    if (payload && Array.isArray(payload.controllers)) {
+      syncControllers(payload.controllers);
+    }
+  });
+
+  socket.on('controller:connected', (payload) => {
+    if (!payload || typeof payload.id !== 'string') return;
+    const record = controllers.get(payload.id);
+    if (record) {
+      record.name = cleanName(payload.name);
+    } else {
+      controllers.set(payload.id, {
+        id: payload.id,
+        name: cleanName(payload.name),
+        connectedAt: num(payload.connectedAt) || Date.now(),
+        lastMotionAt: 0,
+        lastPacketAt: 0,
+        angles: null,
+      });
+    }
+    if (controllers.size > 0) pairingOpen = false;
+    updatePresence();
+  });
+
+  socket.on('controller:disconnected', (payload) => {
+    if (!payload || typeof payload.id !== 'string') return;
+    controllers.delete(payload.id);
+    if (activeId === payload.id) {
+      activeId = null;
+      aim.hasRef = false;
+      aim.color = '#7fe3ff';
+    }
+    updatePresence();
+  });
+
+  socket.on('motion', (payload) => {
+    try {
+      onMotion(payload);
+    } catch (err) {
+      // payload malformato: la TV non deve rompersi
+    }
+  });
+
+  socket.on('button', (payload) => {
+    try {
+      onButton(payload);
+    } catch (err) {
+      // ignora
+    }
+  });
+
+  socket.on('calibrate', (payload) => {
+    try {
+      onCalibrate(payload);
+    } catch (err) {
+      // ignora
+    }
+  });
+
+  /* -------------------------------- disegno -------------------------------- */
+
+  function drawGrid() {
+    const step = 72;
+    const offsetX = (view.w / 2) % step;
+    const offsetY = (view.h / 2) % step;
+
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = 'rgba(120, 185, 240, 0.09)';
+    ctx.beginPath();
+    for (let x = offsetX; x < view.w; x += step) {
+      const px = Math.round(x) + 0.5;
+      ctx.moveTo(px, 0);
+      ctx.lineTo(px, view.h);
+    }
+    for (let y = offsetY; y < view.h; y += step) {
+      const py = Math.round(y) + 0.5;
+      ctx.moveTo(0, py);
+      ctx.lineTo(view.w, py);
+    }
+    ctx.stroke();
+
+    // croce centrale tenue
+    const cx = view.w / 2;
+    const cy = view.h / 2;
+    ctx.strokeStyle = 'rgba(127, 227, 255, 0.16)';
+    ctx.beginPath();
+    ctx.moveTo(cx - 26, cy);
+    ctx.lineTo(cx - 8, cy);
+    ctx.moveTo(cx + 8, cy);
+    ctx.lineTo(cx + 26, cy);
+    ctx.moveTo(cx, cy - 26);
+    ctx.lineTo(cx, cy - 8);
+    ctx.moveTo(cx, cy + 8);
+    ctx.lineTo(cx, cy + 26);
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.arc(cx, cy, 3, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(127, 227, 255, 0.28)';
+    ctx.fill();
+  }
+
+  function drawTrail() {
+    const trail = aim.trail;
+    for (let i = 0; i < trail.length; i += 1) {
+      const point = trail[i];
+      const ratio = (i + 1) / trail.length;
+      ctx.beginPath();
+      ctx.arc(point.x, point.y, 1.5 + ratio * 3.5, 0, Math.PI * 2);
+      ctx.fillStyle = aim.color;
+      ctx.globalAlpha = aim.opacity * 0.06 * ratio;
+      ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  function drawMarker(now) {
+    const pulse = clamp((aim.pulseUntil - now) / 320, 0, 1);
+    const x = aim.pos.x;
+    const y = aim.pos.y;
+    const radius = 13 + pulse * 16;
+
+    ctx.save();
+    ctx.globalAlpha = aim.opacity;
+    ctx.shadowColor = aim.color;
+    ctx.shadowBlur = 12 + pulse * 26;
+
+    ctx.beginPath();
+    ctx.arc(x, y, radius, 0, Math.PI * 2);
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = aim.color;
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.arc(x, y, radius + 5, 0, Math.PI * 2);
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.22)';
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.arc(x, y, 3.5, 0, Math.PI * 2);
+    ctx.fillStyle = aim.color;
+    ctx.fill();
+
+    ctx.restore();
+  }
+
+  function draw(now) {
+    if (!view.w || !view.h) return;
+
+    ctx.fillStyle = '#070e18';
+    ctx.fillRect(0, 0, view.w, view.h);
+
+    const glow = ctx.createRadialGradient(
+      view.w / 2,
+      view.h * 0.45,
+      0,
+      view.w / 2,
+      view.h * 0.45,
+      Math.max(view.w, view.h) * 0.7
+    );
+    glow.addColorStop(0, 'rgba(20, 48, 72, 0.55)');
+    glow.addColorStop(1, 'rgba(7, 14, 24, 0)');
+    ctx.fillStyle = glow;
+    ctx.fillRect(0, 0, view.w, view.h);
+
+    drawGrid();
+    drawTrail();
+    drawMarker(now);
+  }
+
+  /* -------------------------------- frame loop -------------------------------- */
+
+  let lastFrame = performance.now();
+  let fpsFrames = 0;
+  let fpsWindowStart = lastFrame;
+  let lastAgesRefresh = 0;
+
+  function frame(now) {
+    requestAnimationFrame(frame);
+
+    const dt = clamp(now - lastFrame, 1, 64);
+    lastFrame = now;
+
+    const follow = 1 - Math.exp(-dt / 90);
+    aim.pos.x += (aim.target.x - aim.pos.x) * follow;
+    aim.pos.y += (aim.target.y - aim.pos.y) * follow;
+
+    if (now - aim.lastTrailAt > 48) {
+      aim.lastTrailAt = now;
+      aim.trail.push({ x: aim.pos.x, y: aim.pos.y });
+      if (aim.trail.length > 6) aim.trail.shift();
+    }
+
+    const idle = now - aim.lastMotionAt;
+    const wantedOpacity = idle > 5000 ? 0.35 : 1;
+    aim.opacity += (wantedOpacity - aim.opacity) * (1 - Math.exp(-dt / 180));
+
+    if (now - lastAgesRefresh > 200) {
+      lastAgesRefresh = now;
+      refreshAges();
+      renderList();
+    }
+
+    fpsFrames += 1;
+    if (now - fpsWindowStart >= 500) {
+      const fps = (fpsFrames * 1000) / (now - fpsWindowStart);
+      fpsValue.textContent = String(Math.round(fps));
+      fpsFrames = 0;
+      fpsWindowStart = now;
+    }
+
+    draw(now);
+  }
+
+  /* --------------------------------- tasti --------------------------------- */
+
+  function toggleFullscreen() {
+    try {
+      const request =
+        document.fullscreenElement
+          ? document.exitFullscreen()
+          : document.documentElement.requestFullscreen();
+      if (request && typeof request.catch === 'function') {
+        request.catch(() => {});
+      }
+    } catch (err) {
+      // fullscreen negato: nessun errore in console
+    }
+  }
+
+  function recenter() {
+    const record = activeId ? controllers.get(activeId) : null;
+    if (record && record.angles) {
+      aim.alphaRef = record.angles.alpha;
+      aim.betaRef = record.angles.beta;
+      aim.hasRef = true;
+    }
+    centerAim(false);
+  }
+
+  window.addEventListener('keydown', (event) => {
+    if (event.repeat || event.ctrlKey || event.metaKey || event.altKey) return;
+    const key = String(event.key || '').toLowerCase();
+    if (key === 'f') {
+      event.preventDefault();
+      toggleFullscreen();
+    } else if (key === 'c') {
+      event.preventDefault();
+      recenter();
+    }
+  });
+
+  pairingMini.addEventListener('click', () => {
+    pairingOpen = true;
+    applyPairing();
+  });
+
+  pairingPanel.addEventListener('click', () => {
+    if (controllers.size > 0) {
+      pairingOpen = false;
+      applyPairing();
+    }
+  });
+
+  /* --------------------------------- avvio --------------------------------- */
+
+  resize();
+  updatePresence();
+  setConnection('waiting');
+  requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

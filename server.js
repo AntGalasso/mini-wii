@@ -4,6 +4,7 @@ const path = require('path');
 const os = require('os');
 const http = require('http');
 const express = require('express');
+const QRCode = require('qrcode');
 const { Server } = require('socket.io');
 
 const PORT = Number(process.env.PORT) || 3000;
@@ -120,6 +121,57 @@ app.get('/healthz', (req, res) => {
     uptime: Math.round(process.uptime()),
     controllers: controllers.size,
     tvs: tvs.size,
+  });
+});
+
+/**
+ * Valida l'URL da codificare nel QR: solo http/https con un host plausibile
+ * (localhost, IPv4, IPv6 o hostname). Qualsiasi altro schema viene rifiutato.
+ */
+function validateQrUrl(raw) {
+  if (typeof raw !== 'string') return null;
+  const value = raw.trim();
+  if (!value || value.length > 2048) return null;
+
+  let parsed;
+  try {
+    parsed = new URL(value);
+  } catch (err) {
+    return null;
+  }
+
+  if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') return null;
+
+  const host = parsed.hostname;
+  if (!host) return null;
+
+  const isLocalhost = host.toLowerCase() === 'localhost';
+  const isIPv4 =
+    /^\d{1,3}(\.\d{1,3}){3}$/.test(host) &&
+    host.split('.').every((part) => Number(part) <= 255);
+  const isIPv6 = /^\[[0-9a-f:.]+\]$/i.test(host);
+  const isHostname =
+    /^(?=.{1,253}$)[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?(\.[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?)*$/.test(
+      host
+    );
+
+  if (!isLocalhost && !isIPv4 && !isIPv6 && !isHostname) return null;
+  return parsed.toString();
+}
+
+app.get('/qr', (req, res) => {
+  const url = validateQrUrl(req.query.url);
+  if (!url) {
+    res.status(400).type('text/plain').send('URL non valido per il QR');
+    return;
+  }
+
+  QRCode.toString(url, { type: 'svg', errorCorrectionLevel: 'M', margin: 1 }, (err, svg) => {
+    if (err) {
+      res.status(500).type('text/plain').send('Errore nella generazione del QR');
+      return;
+    }
+    res.status(200).type('image/svg+xml').send(svg);
   });
 });
 

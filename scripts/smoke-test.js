@@ -6,7 +6,7 @@ process.env.PORT = '0';
 const { io: createClient } = require('socket.io-client');
 const { start, io, server } = require('../server.js');
 
-const GLOBAL_TIMEOUT_MS = 10000;
+const GLOBAL_TIMEOUT_MS = 20000;
 const WAIT_TIMEOUT_MS = 3000;
 
 let currentCheck = 'setup';
@@ -201,6 +201,54 @@ async function run() {
     );
     assert(disconnected.total === 0, `total atteso 0, ricevuto ${disconnected.total}`);
     ok('controller:disconnected ricevuto con total aggiornato');
+
+    /* ------------------------------ HTTP ------------------------------ */
+
+    currentCheck = 'HTTP GET /';
+    const rootRes = await fetch(`${url}/`, { redirect: 'manual' });
+    await rootRes.text();
+    assert(rootRes.status === 302, `status atteso 302, ricevuto ${rootRes.status}`);
+    assert(
+      rootRes.headers.get('location') === '/tv',
+      `location atteso /tv, ricevuto ${rootRes.headers.get('location')}`
+    );
+    ok('GET / risponde 302 verso /tv');
+
+    currentCheck = 'HTTP GET /tv';
+    const tvRes = await fetch(`${url}/tv`);
+    const tvBody = await tvRes.text();
+    assert(tvRes.status === 200, `status atteso 200, ricevuto ${tvRes.status}`);
+    const tvType = tvRes.headers.get('content-type') || '';
+    assert(tvType.includes('text/html'), `content-type atteso text/html, ricevuto ${tvType}`);
+    assert(tvBody.includes('canvas'), 'tv.html non contiene un canvas');
+    assert(tvBody.includes('/qr?url='), 'tv.html non referenzia /qr?url=');
+    ok('GET /tv risponde 200 text/html con canvas e /qr?url=');
+
+    currentCheck = 'HTTP GET /qr';
+    const qrRes = await fetch(
+      `${url}/qr?url=${encodeURIComponent('http://192.168.1.5:3000/controller')}`
+    );
+    const qrBody = await qrRes.text();
+    assert(qrRes.status === 200, `status atteso 200, ricevuto ${qrRes.status}`);
+    const qrType = qrRes.headers.get('content-type') || '';
+    assert(
+      qrType.includes('image/svg+xml'),
+      `content-type atteso image/svg+xml, ricevuto ${qrType}`
+    );
+    assert(qrBody.includes('<svg'), 'la risposta QR non contiene <svg');
+    ok('GET /qr risponde 200 image/svg+xml con SVG del QR');
+
+    currentCheck = 'HTTP GET /qr con URL non valido';
+    const badQrRes = await fetch(`${url}/qr?url=${encodeURIComponent('javascript:alert(1)')}`);
+    await badQrRes.text();
+    assert(badQrRes.status === 400, `status atteso 400, ricevuto ${badQrRes.status}`);
+    ok('GET /qr con scheme javascript: risponde 400');
+
+    currentCheck = 'HTTP GET /unknown';
+    const missingRes = await fetch(`${url}/unknown`);
+    await missingRes.text();
+    assert(missingRes.status === 404, `status atteso 404, ricevuto ${missingRes.status}`);
+    ok('GET /unknown risponde 404');
 
     currentCheck = 'chiusura';
     if (tv) {
