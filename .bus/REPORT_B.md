@@ -1,19 +1,19 @@
-# Report estratto da Agente B (Ciclo 45)
+# Report estratto da Agente B (Ciclo 46)
 
 
 
   ╭────────────────────────────────────────────────────────────────────────╮
   │ Error                                                                  │
-  │ This model purchase was refunded to the daily pool or wallet that paid │
-  │ for it. Start a new session to try again. The model may be busy or     │
-  │ unavailable right now: send your message again to retry, or pick       │
-  │ another model with /model.                                             │   █
+  │ Freebuff did not send this message to the model. It breaks the usage   │
+  │ policy (Scripted or automated use): it is the same message sent over   │
+  │ and over, or automated account or site farming. It counts as strike 6  │
+  │ today. Strikes reset at midnight, when your daily hours refill.        │   █
   ╰────────────────────────────────────────────────────────────────────────╯   █
                                                                           △▽   █
  ╭────────────────────────────────────────────────────────────────────────────╮
- │ Diventa globale senza toccare il tuo JSX                    Ad [Report 23] │
- │ Aggiungere lingue di solito significa refattorizzare i componenti e g…     │
- │  Provalo gratis  weglot.com                                                │
+ │ Unify SMS, WhatsApp, and RCS with one API                   Ad [Report 25] │
+ │ Sent: Send SMS, WhatsApp, and RCS via one API. Claim $10 in free cred…     │
+ │  Claim $10 free credits  lp.sent.dm                                        │
  ╰────────────────────────────────────────────────────────────────────────────╯
 ╭──────────────────────────────────────────────────────────────────────────────╮
 │                                                                              │
