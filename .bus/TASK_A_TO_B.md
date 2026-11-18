@@ -1,173 +1,420 @@
-# TASK A → B — STEP 2 / 4
+# TASK A → B — STEP 3 / 4
 
-**Obiettivo dello step:** creare `public/controller.html`, il telecomando Wiimote verticale per telefono, che:
-- chiede i permessi `DeviceOrientationEvent` (iOS 13+ / Android) con un tap esplicito,
-- invia al server orientamento (`alpha`, `beta`, `gamma`) e accelerazione/swing a bassa latenza,
-- usa un **touch-pad di fallback** quando il giroscopio non è disponibile (tipico su HTTP in LAN),
-- invia i tasti **A**, **B**, **Calibra** con feedback aptico (`navigator.vibrate`) e stato visivo.
-
-## Stato verificato del repository (QA di A)
-
-- Commit HEAD: `7cf7257` — `auto(agent-b): step completato` (STEP 1).
-- `node --check server.js` / `scripts/smoke-test.js` → OK; `npm test` → `SMOKE TEST PASSED`, exit 0.
-- `public/` contiene **solo** `.gitkeep`: lo STEP 2 non è mai stato implementato.
-- `server.js` espone `{ app, server, io, start }`, protocollo 1, relay `motion` / `button` / `calibrate` / `controller:connected` / `controller:disconnected` / `tv:controller_list`.
-- **Difetto reale confermato:** `socket.emit('tv:presence', ...)` esiste solo dentro `notifyPresence()` (riga ~76), chiamata solo al cambio di stato TV (`tv:hello`, disconnect TV). Un controller registrato a TV già online riceve `controller:ready` ma **mai** lo stato iniziale della TV.
-
-> **Perimetro:** in questo step si consegnano `public/controller.html` e un **micro-fix** a `server.js` + `scripts/smoke-test.js` (punto 1). NON creare `tv.html`, minigiochi o `README.md`: sono gli STEP 3 e 4. Non riscrivere `.bus/` né `knowledge.md`.
+**Obiettivo dello step:** creare `public/tv.html` — la "TV" a schermo intero con
+URL + **QR code offline** per collegare il telefono e un **mirino fluido per ogni
+controller**, mosso in tempo reale dal giroscopio — più il supporto lato server
+necessario (`lib/qr.js`, `GET /qr.svg`, `GET /net-info`, `slot` nell'elenco
+controller).
 
 ---
 
-## 1. Micro-fix obbligatorio al server (prima dell'HTML)
+## 0. QA dello STEP 2 (verificato da A)
 
-In `server.js`, dentro l'handler `controller:hello`, nel ramo di **prima registrazione** (quello che crea il record, `socket.join('controllers')`, emette `controller:ready`, `controller:connected` e chiama `broadcastControllerList()`), **dopo** l'emissione di `controller:ready`, inviare al solo socket appena registrato:
+Stato reale del repository:
+
+- `git log -n 2`: `0daa652` (`auto(ciclo-1): sync automatico fine turno B`, contiene
+  `public/controller.html` 848 righe + micro-fix server + smoke test) e `7cf7257`
+  (STEP 1). Working tree pulito.
+- `npm test` → **verde**, 12 check `OK`, `SMOKE TEST PASSED`, exit 0, inclusa la
+  nuova riga `OK tv:presence iniziale al controller`.
+- `server.js` invia `tv:presence` iniziale al solo controller appena registrato
+  (riga ~193): micro-fix corretto, ramo idempotente e `notifyPresence()` intatti.
+- `public/controller.html`: contratto STEP 2 rispettato (permessi con
+  `requestPermission()` sincrono nel gesto, fallback 1500 ms, filtro
+  passa-basso 0.25/0.75, invio max 60 Hz, pointer capture sul touch-pad,
+  vibrazione guarded, `controller:bye` su `pagehide`, nessun asset esterno,
+  nessun `alert()`).
+
+**STEP 2: SUPERATO.** Due sole note di processo, non di codice:
+
+1. `.bus/REPORT_B.md` è illeggibile: contiene il dump di una TUI (barra di stato,
+   `ZlibError`, prompt del terminale) al posto della relazione. In questo turno il
+   report deve essere markdown strutturato (vedi §7).
+2. `knowledge.md` e i task precedenti indicano due messaggi di commit diversi:
+   d'ora in poi vale **quello indicato al §8** di questo file.
+
+---
+
+## 1. Perimetro
+
+In questo step si consegnano **solo**:
+
+```
+lib/qr.js            (nuovo, generatore QR offline, zero dipendenze runtime)
+public/tv.html       (nuovo, autosufficiente)
+server.js            (modifiche puntuali elencate al §2)
+scripts/smoke-test.js (nuovi check §5)
+package.json         (SOLO devDependency jsqr, per la verifica del QR)
+```
+
+NON creare ancora i minigiochi (STEP 4) e NON scrivere `README.md` (STEP 4).
+Non toccare `public/controller.html` (solo se serve un fix reale: in tal caso
+dichiararlo nel report e non cambiare il protocollo). Non toccare
+`public/.gitkeep`. Non riscrivere `.bus/METAPROMPT.md` né `knowledge.md`.
+
+---
+
+## 2. Lavoro lato server (prima di `tv.html`)
+
+### 2.1 `lib/qr.js` — generatore QR offline
+
+CommonJS, puro JavaScript, **zero dipendenze**, `'use strict'`. Nessun uso di
+Buffer/crittografia: solo aritmetica su array/stringhe UTF-8-agnostiche (vedi
+codifica byte sotto).
+
+API richiesta:
 
 ```js
-socket.emit('tv:presence', { online: tvs.size > 0, total: tvs.size });
+module.exports = { encode, toSvg, MAX_BYTES };
+// encode(text) -> { version, ecc: 'M', mask, size, modules: boolean[][] }
+//                 modules[y][x] === true  => modulo scuro
+// toSvg(text, { scale, border }) -> string SVG completa
+// MAX_BYTES = 200 (limite di input accettato; oltre -> throw RangeError)
 ```
 
-Nessun'altra modifica a `server.js` (non toccare il ramo idempotente, `notifyPresence`, la validazione o il contratto di `start()`).
+Requisiti tecnici vincolanti:
 
-In `scripts/smoke-test.js`, **dopo** il check `controller:ready` e **prima** di attendere `controller:connected`, attendere `tv:presence` sul client controller (usare la helper `waitFor` esistente) e verificare `online === true` e `total === 1` (la TV è già registrata in quel punto dello script). Stampare esattamente:
+- **Modalità byte** (mode indicator `0100`). Codifica dei caratteri: per ogni code
+  point, se `<= 0x7F` 1 byte, `<= 0x7FF` 2 byte, `<= 0xFFFF` 3 byte, altrimenti
+  4 byte (UTF-8 scritto a mano; `TextEncoder` non è disponibile in tutti i
+  contesti npm script, non usarlo).
+- **ECC level M**, versioni **1–10** scelte automaticamente in base alla
+  lunghezza (la più piccola che contiene i dati). Conteggio caratteri: 8 bit per
+  v1–9, 16 bit per v10+.
+- Terminatore `0000`, padding a byte con `0xEC`/`0x11`, Reed–Solomon su GF(256)
+  con polinomio `0x11D`, **interleaving** standard dei blocchi.
+- Tabella blocchi ECC M da usare (total codewords, ecc per blocco, blocchi/ dati):
 
-```js
-ok('tv:presence iniziale al controller');
+  | v | totali | ecc/blocco | blocchi × dati |
+  |---|--------|------------|----------------|
+  | 1 | 26  | 10 | 1×16 |
+  | 2 | 44  | 16 | 1×28 |
+  | 3 | 70  | 26 | 1×44 |
+  | 4 | 100 | 18 | 2×32 |
+  | 5 | 134 | 24 | 2×43 |
+  | 6 | 172 | 16 | 4×27 |
+  | 7 | 196 | 18 | 4×31 |
+  | 8 | 242 | 22 | 2×38 + 2×39 |
+  | 9 | 292 | 22 | 3×36 + 2×37 |
+  |10 | 346 | 26 | 4×43 + 1×44 |
+
+- Pattern di funzione: finder 7×7 + separatori, timing, dark module a
+  `(8, 4·v+9)`, alignment pattern ai centri
+  v1 nessuno, v2 `[6,18]`, v3 `[6,22]`, v4 `[6,26]`, v5 `[6,30]`, v6 `[6,34]`,
+  v7 `[6,22,38]`, v8 `[6,24,42]`, v9 `[6,26,46]`, v10 `[6,28,50]`
+  (combinazioni, esclusi i tre angoli finder).
+- Format info 15 bit BCH (ECC M = `00`), mask `0x5412`; version info 18 bit
+  (polinomio `0x1F25`) per v ≥ 7.
+- **8 maschere**, penalità standard (regole 1–4) e scelta della maschera con
+  penalità minima. Output deterministico: stesso input ⇒ stessa matrice.
+- `toSvg`: `viewBox="0 0 (size+2·border) (size+2·border)"`,
+  `shape-rendering="crispEdges"`, sfondo bianco `<rect>` a piena area, **un
+  `<rect>` per ogni modulo scuro** (niente path compressi: il test conta i
+  `<rect>`), attributi `width`/`height` = lato in pixel (`scale` × viewBox).
+  `scale` default 6, `border` default 4.
+
+### 2.2 Rotte HTTP nuove in `server.js`
+
+```
+GET /qr.svg?data=<testo>&scale=<1..12>&border=<0..8>
+  - data mancante -> 400 text/plain "parametro data mancante"
+  - data.length > 200 -> 400 text/plain "parametro data troppo lungo"
+  - errore di encode -> 500 text/plain "QR non generabile"
+  - ok -> 200, Content-Type "image/svg+xml; charset=utf-8",
+          Cache-Control "public, max-age=300", body = toSvg(...)
+          (scale/border fuori range o non numerici -> default, mai 400)
+
+GET /net-info   -> 200 JSON
+  { port: <porta effettiva>, urls: ["http://192.168.1.10:3000", ...],
+    primary: "http://192.168.1.10:3000" | null }
+  - urls: tutti gli IPv4 non-internal, schema http, porta effettiva;
+  - primary: primo elemento di urls, null se urls è vuoto.
 ```
 
-Il test deve restare verde e nessun altro check deve cambiare.
+Refactor richiesto: estrarre la raccolta degli IPv4 in una helper
+`lanUrls(port)` usata **sia** da `/net-info` **sia** dal logging di avvio, senza
+cambiare il testo dei log esistenti (`TV: ...` / `Telefono: ...`).
+
+### 2.3 `slot` nell'elenco controller
+
+In `controllerList()` aggiungere `slot: c.slot` all'oggetto restituito
+(campi: `id`, `name`, `connectedAt`, `slot`). Nessun'altra modifica al
+protocollo: nomi eventi, campi di `motion`/`button`/`calibrate`, porta e
+contratto di `start()` restano identici. `slot` è additivo: aggiornare il
+commento del protocollo solo se ne esiste uno.
 
 ---
 
-## 2. File da creare
+## 3. `public/tv.html` — struttura
 
-```
-public/controller.html
-```
+File **unico e autosufficiente**: HTML + CSS + JS inline, nessun CDN, nessuna
+immagine esterna, nessun font esterno (system font stack), nessun asset oltre a
+`/socket.io/socket.io.js` e alle rotte del server (`/qr.svg`, `/net-info`).
+Ammesso solo `<link rel="icon" href="data:,">` per evitare il 404 del favicon.
 
-File **unico e autosufficiente**: HTML + CSS + JS inline. Nessun CDN, nessuna risorsa esterna, nessuna immagine (forme e gradienti CSS). Client Socket.io caricato da `/socket.io/socket.io.js` (stessa origine, servito da Socket.io). Non toccare `public/.gitkeep`.
+- `<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">`
+  (nessun `user-scalable=no`: è una pagina da PC/TV).
+- `html, body { height: 100%; margin: 0; overflow: hidden; }`, tema scuro con
+  vignettatura e griglia di profondità in CSS, `100dvh` con fallback `100vh`.
+- `cursor: none` quando il mouse è fermo da 2,5 s (ripristinato al `mousemove`).
+- Testi in italiano.
+
+Dall'alto verso il basso / per livelli:
+
+1. **Top bar** (`position: fixed`, z-index alto): brand `MINI-WII` + sottotitolo
+   `WEB CONSOLE`; al centro stato server (`#tv-status`: `Connessione…`,
+   `TV online`, `Riconnessione…`); a destra badge `protocollo 1` e contatore
+   `#controller-count` (`0 controller` / `1 controller` / `N controller`).
+2. **Card di collegamento** `#join-card`, semitrasparente, centrata in alto:
+   titolo `Collega il telefono`, URL grande in monospace `#join-url`
+   (selezionabile), QR `#qr` (`<img>` con `alt` descrittivo), nota
+   `Scansiona il QR o apri l'URL dal telefono`, pulsante `#btn-copy`
+   `Copia link` (guarded: `navigator.clipboard` può mancare su HTTP; in tal caso
+   seleziona il testo dell'URL e mostra il toast `Copia manuale: link selezionato`).
+   La card si **riduce** (classe `.compact`: QR più piccolo, solo URL) quando
+   almeno un controller è connesso, e torna estesa quando non ce ne sono.
+3. **Arena** `#arena` a tutto schermo: contiene i mirini, un alone radiale e, con
+   zero controller, l'overlay `#idle-hint` (`Scansiona il QR per iniziare`).
+4. **Riga badge controller** `#badges` in basso a sinistra: un chip per controller
+   con pallino colorato, `Slot N`, nome e due indicatori `A` / `B`. Il chip
+   appare su `controller:connected`/`tv:controller_list`, sparisce su
+   `controller:disconnected`. Con molti controller i chip vanno a capo e restano
+   dentro il viewport (max 8 chip visibili, oltre: `+N`).
+5. **Toast** `#toasts` in basso al centro: max 3, auto-dismiss 1,8 s, nessun
+   `alert()`.
+6. **Footer/HUD** discreto: `#fps` (aggiornato a 1 Hz) e suggerimento
+   `Muovi il Wiimote per puntare · Calibra per ricentrare`.
+
+### 3.1 Mirino (una istanza per controller)
+
+Elemento `.crosshair` creato dinamicamente, con CSS custom property `--c` per il
+colore. Composizione: anello esterno Ø 34 px, due trattini, punto centrale Ø 6 px,
+glow `box-shadow` del colore dello slot. Palette fissa per slot:
+`1 #4ade80`, `2 #38bdf8`, `3 #f472b6`, `4 #fbbf24`, oltre `#a78bfa`.
+
+- Posizionamento **solo** con `transform: translate3d(Xpx, Ypx, 0) translate(-50%,-50%) scale(s)`
+  e `will-change: transform`; mai `left`/`top`.
+- Classe `.stale` (opacità ridotta) se quel controller non invia `motion` da
+  > 1500 ms.
+- Su `controller:disconnected` il mirino viene rimosso subito (nessun fantasma).
 
 ---
 
-## 3. Struttura e stile (Wiimote verticale)
-
-Mobile-first, solo verticale, senza scroll e senza zoom:
-
-- `<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">`.
-- `html, body { height: 100%; margin: 0; overscroll-behavior: none; }`, sfondo scuro con corpo del telecomando centrato, larghezza `min(92vw, 420px)`, alto `min(92vh, 780px)` con fallback `100dvh`, `border-radius` generoso, gradiente bianco/ghiaccio, ombra.
-- Area interattiva con `touch-action: none; user-select: none; -webkit-user-select: none;` e `-webkit-tap-highlight-color: transparent`.
-- Supporto `env(safe-area-inset-bottom)` per iPhone.
-
-Dall'alto verso il basso:
-
-1. **Header di stato**: pallino `#status-dot`, testo `#status-text` con stati `Connessione…`, `Connesso — in attesa TV`, `Connesso — TV online`, `Riconnessione…`; badge `#slot-badge` con lo slot assegnato.
-2. **Pannello giroscopio**: pulsante grande `#btn-permission` "Attiva giroscopio" (visibile finché i permessi non sono concessi), istruzioni brevi ("Tieni il telefono in verticale, punta verso la TV"), e `#gyro-readout` con alpha/beta/gamma aggiornati a ~10 Hz per debug.
-3. **Touch-pad di fallback** `#touchpad`: area ampia (≥ 180 px di altezza), bordo tratteggiato, etichetta "Touch-pad", indicatore `#touch-dot`. **Visibile solo in modalità fallback**, con banner `#fallback-banner`: "Giroscopio non disponibile su HTTP. Usa il touch-pad o apri la pagina in HTTPS." e pulsante `#btn-use-touch` per forzare manualmente il touch-pad.
-4. **Tasto B** `#btn-b`: barra orizzontale larga sotto il touch-pad, etichetta "B" (stile grilletto).
-5. **Tasto A** `#btn-a`: bottone circolare grande (Ø ~ 110 px) in basso a destra, etichetta "A".
-6. **Calibra** `#btn-calibra`: bottone pillola, etichetta "Calibra" con icona testuale `⌖`, sotto/sinistra del tasto A.
-7. **Footer**: nome dispositivo (`Wiimote`) e nota "protocollo 1".
-
-Tutti i bottoni devono avere `type="button"`, `aria-label`, e stato `:active`/`.pressed` evidente (scala + luminosità).
-
----
-
-## 4. Logica client (contratto vincolante)
+## 4. `public/tv.html` — logica client (contratto vincolante)
 
 ### 4.1 Connessione
-- `const socket = io({ transports: ['websocket', 'polling'] });` — nessun URL hardcoded.
-- Su `connect`: `socket.emit('controller:hello', { name: 'Wiimote' })`.
-- Su `controller:ready`: salvare `id`, `slot`, `protocol`; aggiornare `#slot-badge`; log discreto in console.
-- Su `disconnect`: stato `Riconnessione…`; alla `connect` successiva ri-emettere `hello` (nuovo id assegnato dal server) e ripulire lo stato tasti premuti (nessun `up` pendente).
-- Su `tv:presence`: aggiornare l'header (`TV online` / `in attesa TV`) usando `online` e `total`.
-- Su `error` con `code: 'already_registered'`: mostrare stato di errore e **non** ritentare `hello`.
-- Su `pagehide` (e `beforeunload`): `socket.emit('controller:bye')` in `try/catch` per liberare subito lo slot (il server ha già l'handler `controller:bye`). Nessun `alert()` bloccante, mai.
 
-### 4.2 Permessi orientamento
-- Rilevare il supporto: `'DeviceOrientationEvent' in window`.
-- iOS (`typeof DeviceOrientationEvent.requestPermission === 'function'`): il tap su `#btn-permission` deve chiamare **direttamente** `DeviceOrientationEvent.requestPermission()` nello stesso gesto utente (nessun `await` prima della chiamata) e gestire `granted` / `denied` / eccezione.
-- Android/desktop: il tap registra `window.addEventListener('deviceorientation', onOrientation, { passive: true })`; su desktop senza sensori non arriverà alcun evento → fallback automatico.
-- Su `denied` o eccezione: messaggio in `#fallback-banner` e fallback attivo.
-- **Fallback automatico**: se entro **1500 ms** dal tap non è arrivato alcun evento `deviceorientation` con `alpha`, `beta`, `gamma` finiti, attivare la modalità touch-pad. `#btn-use-touch` la attiva subito (utile anche per test su desktop).
-- Al consenso `#btn-permission` scompare; in modalità fallback resta visibile solo il touch-pad.
+- `const socket = io({ transports: ['websocket', 'polling'] });` (nessun URL
+  hardcoded).
+- Su `connect`: `socket.emit('tv:hello', {})`; su `tv:ready`: salvare
+  `id`/`protocol`, aggiornare lo stato, popolare l'elenco controller con
+  `payload.controllers` (che ora include `slot`).
+- Su `tv:controller_list`: sincronizzare chip e mirini con l'elenco ricevuto
+  (creazione, rimozione, **ordine per slot**).
+- Su `controller:connected`: aggiungere chip + mirino; toast
+  `Slot N collegato`.
+- Su `controller:disconnected`: rimuovere chip + mirino; toast
+  `Slot N disconnesso`.
+- Su `disconnect`: stato `Riconnessione…`, **svuotare** chip e mirini (nessun
+  fantasma), mantenere la card estesa; alla `connect` successiva ri-emettere
+  `tv:hello`.
+- Su `error` con `code: 'already_registered'`: stato di errore visibile e **stop**
+  dei tentativi di `tv:hello` (nessun loop).
+- `motion`, `button`, `calibrate` ricevuti da id sconosciuto: **ignorati** in
+  silenzio (l'elenco è la fonte di verità).
 
-### 4.3 Campionamento e invio del movimento
-- `deviceorientation` → `alpha`, `beta`, `gamma`; accelerazione da `event.accelerationIncludingGravity` con fallback `event.acceleration`, altrimenti `ax = ay = 0`, `az = 9.81`.
-- Applicare gli **offset di calibrazione** correnti (`alpha0`, `beta0`, `gamma0`, default 0) e normalizzare `alpha` in `[0, 360)`. Il server ri-normalizza comunque: non delegare a lui il calcolo degli offset.
-- Filtro passa-a-basso anti-jitter: `v = 0.25 * nuovo + 0.75 * precedente` su alpha/beta/gamma; nessun filtro sull'accelerazione.
-- `swing` = `Math.abs(Math.hypot(ax, ay, az) - 9.81)`, arrotondato a 3 decimali; sempre finito e ≥ 0.
-- Invio **al massimo a 60 Hz**: scartare i campioni se `now - lastSent < 16 ms`; invio immediato, senza batching né timer. Se `!socket.connected`, scartare il campione.
-- Payload esatto:
-  ```js
-  { alpha, beta, gamma, ax, ay, az, swing, t: Date.now() }
-  ```
-  Se un campo non è finito, non inviare il pacchetto.
-- Nessun `console.log` per singolo campione.
+### 4.2 URL del telefono e QR
 
-### 4.4 Touch-pad di fallback
-- **Pointer Events** con `setPointerCapture` e `touch-action: none`.
-- Mappatura deterministica (documentarla in un commento: la userà la TV nello STEP 3):
-  - `alpha` = `x / width * 360` in `[0, 360)` (orizzontale = imbardata),
-  - `beta` = `(0.5 - y / height) * 180` in `[-90, 90]` (in alto = positivo),
-  - `gamma` = `((x / width) - 0.5) * 90` in `[-45, 45]`,
-  - `ax = 0, ay = 0, az = 9.81`, `swing = 0`, `t = Date.now()`.
-- Al `pointerup` / `pointercancel` / `pointerleave` mantenere l'ultimo orientamento (niente reset a 0) e fermare l'invio; `#touch-dot` mostra la posizione.
-- Stessa funzione di invio del giroscopio, stesso limite di 60 Hz.
-- In modalità giroscopio il touch-pad è nascosto e non invia nulla.
+```js
+// Host di rete (es. http://192.168.1.10:3000) -> usa location.origin.
+// localhost/127.0.0.1/[::1] -> interroga /net-info e usa primary.
+```
 
-### 4.5 Tasti A, B, Calibra
-- `pointerdown` → `state: 'down'`; `pointerup` / `pointercancel` / `pointerleave` → `state: 'up'`. Nessun `up` senza `down` precedente; nessun `down` duplicato per lo stesso pointer.
-- Payload: `{ button: 'A' | 'B' | 'CALIBRA', state: 'down' | 'up', t: Date.now() }`.
-- Vibrazione su `down`: `navigator.vibrate?.(15)` dentro `try/catch`; nessuna vibrazione su `up`.
-- **Calibra**: azzera gli offset (`alpha0`, `beta0`, `gamma0` = valori grezzi correnti, 0 se assenti), invia `controller:calibrate` con `{ t: Date.now() }` e vibra con pattern `[20, 40, 20]`. In modalità touch-pad non deve rompersi: resetta il touch-pad al centro e invia comunque `calibrate`.
-- Feedback visivo immediato tramite `:active`; non attendere ack (il server non ne invia).
-- Se il socket è disconnesso, i tasti vibrano/animano ma non inviano nulla.
+- Se `primary` è `null` o la fetch fallisce: fallback `location.origin`, senza
+  eccezioni non gestite.
+- URL finale = base + `/controller`; `#join-url` mostra l'URL; `#qr.src` =
+  `/qr.svg?scale=6&data=` + `encodeURIComponent(url)`.
+- Un solo `encodeURIComponent`, niente concatenazioni fragili, nessun carattere
+  `&` non codificato nel parametro.
 
-### 4.6 Robustezza e UX
-- Nessun errore JS non gestito: handler DOM e callback Socket.io in `try/catch` dove ragionevole.
-- Niente scroll, niente selezione testo, niente zoom su doppio tap.
-- Testi in italiano, coerenti con il resto del progetto.
-- Identico funzionamento su desktop (touch-pad + mouse) per i test manuali.
+### 4.3 Movimento e fluidità (cuore dello step)
+
+Il gestore `motion` **non tocca il DOM**: salva solo i valori di target nel
+record del controller.
+
+```
+// Mappatura normalizzata dell'arena, documentata in un commento:
+//   x = 0.5 + (gamma / 45) * GAIN_X
+//   y = 0.5 - (beta  / 90) * GAIN_Y
+//   GAIN_X = GAIN_Y = 0.42, dead zone |gamma| < 1.2 && |beta| < 1.2 (mantiene il target)
+//   clamp finale in [0.02, 0.98] su entrambi gli assi
+```
+
+- Loop unico `requestAnimationFrame` per **tutti** i mirini.
+- Smoothing indipendente dal frame rate:
+  `k = 1 - Math.exp(-dt / 55)` con `dt` reale in ms limitato a 50 ms; ogni asse
+  `current += (target - current) * k`.
+- Il loop si ferma quando `document.hidden` e riparte su `visibilitychange`
+  resettando `lastFrame` (nessun salto).
+- Posizione in pixel calcolata da `arena.getBoundingClientRect()` cacheato e
+  aggiornato su `resize`/`orientationchange`.
+- `swing` dagli eventi `motion` (ultimo valore, decadimento esponenziale verso 0
+  in 300 ms): `scale = 1 + Math.min(swing / 12, 0.35)`.
+- `#fps` aggiornato **una volta al secondo** con media mobile; nessun
+  `console.log` per frame o per campione.
+- Se `dt` anomalo (tab tornata visibile) non deve esserci teletrasporto del
+  mirino: `dt` clampato.
+
+### 4.4 Tasti e calibrazione
+
+- `button` con `state: 'down'` accende l'indicatore `A`/`B` del chip dello slot;
+  `'up'` lo spegne; un `'up'` senza `'down'` non deve lasciare stati accesi.
+- `button: 'CALIBRA'` **e** l'evento `calibrate` producono lo stesso effetto (il
+  controller invia entrambi): ricentrare il mirino di quello slot con un
+  passaggio fluido al centro (target `0.5, 0.5`, 300 ms) e toast
+  `Slot N calibrato`. Effetto **idempotente**: due eventi ravvicinati non
+  duplicano il toast oltre il limite di 3.
+- Su `controller:disconnected` spegnere gli indicatori di quel chip.
+
+### 4.5 Robustezza
+
+- Nessun errore JS non gestito: handler Socket.io e DOM in `try/catch` dove
+  ragionevole; nessun `alert()`; nessuna dipendenza dal fatto che il QR esista
+  (se `/qr.svg` risponde 400/500: nascondere `#qr` e mostrare solo l'URL).
+- Desktop e TV funzionano identici; test manuale possibile aprendo `/controller`
+  sullo stesso PC e usando il touch-pad col mouse.
+- Nessun asset esterno: solo `src`/`href` same-origin o `data:`.
 
 ---
 
-## 5. Verifica richiesta
+## 5. Nuovi check in `scripts/smoke-test.js`
 
-Non esiste browser/display nell'ambiente (Chrome non installato): la verifica è **statica + server**, e il report deve dichiararlo esplicitamente.
+Aggiungere **dopo** i check esistenti (che devono restare invariati) e mantenere
+`SMOKE TEST PASSED` + exit 0. Nessun check esistente può essere rimosso o
+indebolito.
 
-1. `node --check server.js` e `node --check scripts/smoke-test.js` → exit 0.
-2. `npm test` → `SMOKE TEST PASSED`, exit 0, con la nuova riga `OK tv:presence iniziale al controller`.
-3. Estrazione e compilazione dell'inline script:
-   ```bash
-   node -e "const fs=require('fs');const h=fs.readFileSync('public/controller.html','utf8');const m=[...h.matchAll(/<script(?![^>]*src)[^>]*>([\s\S]*?)<\/script>/g)];if(!m.length)throw new Error('nessuno script inline');fs.writeFileSync('/tmp/controller.inline.js',m.map(x=>x[1]).join('\n'));"
-   node --check /tmp/controller.inline.js
-   ```
-   → exit 0.
-4. Avvio reale su porta effimera (`PORT=0 node server.js` oppure `start(0)`):
-   - `GET /controller` → **200**, `Content-Type: text/html`, corpo contenente `btn-permission`, `touchpad`, `btn-a`, `btn-b`, `btn-calibra`.
-   - `GET /` → 302 a `/tv`; `GET /tv` → 404 invariato ("tv.html non ancora disponibile (STEP 3)").
-   - `GET /healthz` → JSON valido.
-5. `grep` di conformità (tutti presenti in `public/controller.html`): `/socket.io/socket.io.js`, `DeviceOrientationEvent.requestPermission`, `deviceorientation`, `accelerationIncludingGravity`, `navigator.vibrate`, `controller:hello`, `controller:motion`, `controller:button`, `controller:calibrate`, `tv:presence`, `touch-action`, `setPointerCapture`, `controller:bye`.
-6. Controllo "nessun asset esterno": nessun `src=`/`href=` verso `http://` o `https://` nel file (solo l'import same-origin di Socket.io).
-7. In `REPORT_B.md` riportare che la prova su telefono reale (sensori + vibrazione) **non è eseguibile** qui, con i passi manuali attesi: aprire `/controller` dal telefono sulla LAN (URL stampati all'avvio), tap "Attiva giroscopio", verificare `controllers: 1` su `/healthz`, provare A/B/Calibra, e su HTTP verificare l'attivazione del touch-pad dopo 1,5 s.
+1. HTTP, usando `fetch` di Node 20 e la porta effettiva di `start(0)`:
+   - `GET /tv` → 200, `content-type` contiene `text/html`, body contiene
+     `id="crosshair"`, `id="qr"`, `id="join-url"`, `/socket.io/socket.io.js`.
+     → `ok('GET /tv 200 text/html con mirino e QR')`
+   - `GET /` con `redirect: 'manual'` → 302 e `location: /tv`.
+     → `ok('GET / reindirizza a /tv')`
+   - `GET /controller` → 200, body contiene `btn-permission` (regressione STEP 2).
+     → `ok('GET /controller 200 (regressione STEP 2)')`
+   - `GET /healthz` → 200 e JSON con `ok === true`.
+     → `ok('GET /healthz JSON valido')`
+2. `/net-info` → 200 JSON, `port === port` effettiva, `urls` array,
+   `primary === null || typeof primary === 'string'`, ogni url inizia con
+   `http://` e contiene `:${port}`.
+   → `ok('GET /net-info coerente con la porta effettiva')`
+3. `/qr.svg`:
+   - `?data=<url del controller>` → 200, `content-type` contiene `image/svg+xml`,
+     body inizia con `<svg`, contiene `shape-rendering="crispEdges"`.
+   - numero di `<rect>` = numero di moduli scuri + 1 (sfondo), confrontato con
+     `require('../lib/qr.js').encode(url)`.
+   - senza `data` → 400; `data` di 201 caratteri → 400.
+   → `ok('GET /qr.svg genera SVG completo e rifiuta input non validi')`
+4. **Decodifica reale** con `jsqr` (vedi §6):
+   - renderizzare la matrice di `encode()` su RGBA (`scale` 4, `border` 4,
+     bianco/nero, `Uint8ClampedArray`), decodificare con `jsqr(rgba, w, h)` e
+     verificare che `result.data` sia **identico** al testo di partenza;
+   - tre payload: `http://192.168.1.10:3000/controller` (v2/v3),
+     `https://example.test/a?b=1&c=2` e una stringa UTF-8 accentata di ~150 byte
+     (`http://192.168.1.10:3000/controller?nome=Città è`), che deve cadere su una
+     versione alta e quindi coprire interleaving e more-block;
+   - in caso di decodifica fallita, il test deve **fallire** (niente `try`
+     silenziosi).
+   → `ok('QR decodificato da jsqr su 3 payload (v1-v10)')`
+5. Socket, dopo la registrazione del controller (riusando `waitFor`):
+   - `tv:controller_list` successivo alla registrazione contiene
+     `controllers[0].slot === ctrlReady.slot`.
+     → `ok('tv:controller_list include lo slot')`
+6. Chiusura: chiudere anche eventuali `fetch` in sospeso prima di `server.close()`
+   (nessun handle aperto, il processo deve uscire da solo con exit 0).
 
 ---
 
-## 6. Criteri di accettazione
+## 6. Dipendenza di test (unica eccezione ammessa)
 
-- [ ] `server.js` invia `tv:presence` iniziale al solo controller appena registrato; nessun'altra modifica al server.
-- [ ] `npm test` verde con il nuovo check `tv:presence` (exit 0), output riportato integralmente.
-- [ ] `public/controller.html` esiste, è autosufficiente (nessun asset esterno) e il suo script inline compila con `node --check`.
-- [ ] Tutti gli elementi e gli eventi del protocollo sono presenti e coerenti con il contratto STEP 1.
-- [ ] Layout Wiimote verticale, touch-pad di fallback funzionante anche con mouse, vibrazione guarded, nessun `alert()`.
-- [ ] `GET /controller` risponde 200 `text/html`; `/tv` continua a rispondere 404 STEP 3.
-- [ ] Nessuna nuova dipendenza in `package.json`.
-- [ ] Commit: `git add -A && git commit -m "auto(agent-b): step completato"` e `git push origin main`.
+```bash
+npm install --save-dev jsqr@^1.4.0
+```
+
+- Solo `devDependencies`; **nessuna** dipendenza runtime nuova, nessun nuovo
+  script npm, nessun bundler.
+- `jsqr` va usato **solo** dentro `scripts/smoke-test.js` per la decodifica QR.
+- Se l'installazione fallisce (rete assente): **non** lasciare `package.json` o
+  `package-lock.json` in stato incoerente, rimuovere la dipendenza, mantenere i
+  check strutturali del punto 3 e dichiarare nel report che la decodifica non è
+  stata eseguita. Se invece l'installazione riesce (atteso: la rete è
+  disponibile), il check 4 è **obbligatorio**.
+
+---
+
+## 7. Verifica richiesta e report
+
+Nessun browser/display nell'ambiente (Chrome non installato): la verifica è
+**statica + HTTP + Socket.io**. Dichiararlo esplicitamente nel report.
+
+1. `node --check server.js`, `node --check lib/qr.js`,
+   `node --check scripts/smoke-test.js` → exit 0.
+2. Estrazione e compilazione degli script inline di **entrambe** le pagine con lo
+   stesso comando dello STEP 2 (una pagina per volta, `/tmp/tv.inline.js` e
+   `/tmp/controller.inline.js`) → exit 0.
+3. `npm test` → `SMOKE TEST PASSED`, exit 0, con i 6 nuovi `OK`; riportare
+   **l'output integrale**, non un estratto.
+4. Server reale su porta effimera (`PORT=0 node server.js &` oppure `start(0)`):
+   `curl -i` per `/tv`, `/`, `/controller`, `/healthz`, `/net-info`,
+   `/qr.svg?data=test` e `/qr.svg` (senza data). Riportare **status, content-type
+   e prima riga del body** di ciascuno.
+5. `grep` di conformità in `public/tv.html` (tutti presenti):
+   `/socket.io/socket.io.js`, `requestAnimationFrame`, `tv:hello`, `tv:ready`,
+   `tv:controller_list`, `controller:connected`, `controller:disconnected`,
+   `motion`, `button`, `calibrate`, `getBoundingClientRect`,
+   `translate3d`, `visibilitychange`, `/qr.svg`, `/net-info`, `dvh`.
+6. Controllo "nessun asset esterno": nessun `src=`/`href=` verso `http://` o
+   `https://` in `tv.html` (solo same-origin e `data:`).
+7. Prova manuale **non eseguibile qui**, da descrivere come passi attesi:
+   aprire `/tv` sul PC → il QR compare con l'IP LAN; scansionarlo col telefono →
+   `/controller`; tap `Attiva giroscopio`; sul PC il mirino segue il telefono in
+   modo fluido; premere A/B → gli indicatori del chip si accendono; premere
+   `Calibra` → il mirino torna al centro e compare il toast; su HTTP il
+   touch-pad del telefono muove il mirino (mappatura x→alpha, y→beta).
+8. `.bus/REPORT_B.md` deve essere **markdown strutturato**, non un dump di
+   terminale: sezioni `## Cosa ho fatto`, `## File`, `## Comandi e output`,
+   `## Check di verifica` (elenco puntato con esito), `## Limiti`, `## Note per
+   l'Agente A` (max 10 righe complessive per le ultime due sezioni).
+
+---
+
+## 8. Criteri di accettazione
+
+- [ ] `lib/qr.js` senza dipendenze, deterministico, v1–v10 ECC M; QR decodificato
+      correttamente da `jsqr` sui 3 payload.
+- [ ] `GET /qr.svg` 200 `image/svg+xml` con un `<rect>` per modulo scuro; 400 su
+      `data` mancante o > 200 caratteri.
+- [ ] `GET /net-info` coerente con la porta effettiva; helper `lanUrls()` usata
+      anche dai log di avvio senza cambiare il testo dei log.
+- [ ] `controllerList()` include `slot`; nessun'altra modifica al protocollo.
+- [ ] `public/tv.html` esiste, autosufficiente, script inline compilabile, nessun
+      asset esterno, nessun `alert()`, nessun log per frame.
+- [ ] Mirino per controller, `requestAnimationFrame` unico, smoothing
+      indipendente da dt, clamp e dead zone come da mappatura documentata.
+- [ ] Card QR compatta/estesa, copia link guarded, fallback su URL se il QR
+      fallisce.
+- [ ] `npm test` verde (exit 0) con i 6 nuovi check e i 12 preesistenti.
+- [ ] Nessuna dipendenza runtime nuova; `public/controller.html` invariato.
+- [ ] Commit `git add -A && git commit -m "feat(loop): step 3 completato da Agente B (tv.html + QR)"`, poi `git push origin main`: il remote `origin` (SSH, `git@github.com:AntGalasso/mini-wii.git`) esiste; se il push fallisce (chiave SSH assente) annotare l'errore nel report e considerare lo step completo lo stesso.
 - [ ] Ultimo comando assoluto del turno: `touch .bus/ready_for_a`.
 
-## 7. Cosa NON fare
+## 9. Cosa NON fare
 
-- Non creare `public/tv.html`, minigiochi o `README.md`.
-- Non introdurre framework, bundler, CDN o immagini esterne.
-- Non modificare il protocollo esistente (nomi eventi/campi) né la porta o il contratto di `start()`.
-- Non introdurre log per singolo campione di movimento.
-- Non aggiungere dipendenze o script npm.
+- Non creare i minigiochi né `README.md` (STEP 4).
+- Non aggiungere dipendenze runtime, CDN, font, immagini o bundler.
+- Non cambiare nomi/campi degli eventi esistenti, la porta o il contratto di
+  `start()`.
+- Non spostare il calcolo degli offset di calibrazione sul server (resta nel
+  controller).
+- Non rimpiazzare il QR con un servizio esterno: deve funzionare su LAN senza
+  internet.
+- Non usare `setTimeout`/`setInterval` per animare il mirino: solo `rAF`.
