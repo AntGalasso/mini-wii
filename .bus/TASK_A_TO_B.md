@@ -1,4 +1,4 @@
-# Task estratto da Agente A (Ciclo 78)
+# Task estratto da Agente A (Ciclo 79)
 
 
 
@@ -11,9 +11,9 @@
   ╰────────────────────────────────────────────────────────────────────────╯   █
                                                                           △▽   █
  ╭────────────────────────────────────────────────────────────────────────────╮
- │ Send SMS, WhatsApp, and RCS via one API                     Ad [Report 27] │
- │ Sent even has an MCP server to send messages from your agents, with $…     │
- │  Claim $10 free credits  lp.sent.dm                                        │
+ │ Run coding agents on your existing AI subscriptions         Ad [Report 30] │
+ │ Orchestrate your multi-agent workflows with OpenLLM's developer-focus…     │
+ │  Start Building  openllm.sh                                                │
  ╰────────────────────────────────────────────────────────────────────────────╯
 ╭──────────────────────────────────────────────────────────────────────────────╮
 │                                                                              │

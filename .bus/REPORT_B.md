@@ -1,4 +1,4 @@
-# Report estratto da Agente B (Ciclo 78)
+# Report estratto da Agente B (Ciclo 79)
 
 
 
@@ -11,9 +11,9 @@
   ╰────────────────────────────────────────────────────────────────────────╯   █
                                                                           △▽   █
  ╭────────────────────────────────────────────────────────────────────────────╮
- │ Ti è stato chiesto di creare un tool per i costi?           Ad [Report 66] │
- │ Costruisci su Costory, non da zero. Una dashboard FinOps è gratuita, …     │
- │  Scopri di più  costory.io                                                 │
+ │ Niente prompt, solo correzioni di bug                       Ad [Report 45] │
+ │ PostHog diagnostica automaticamente i problemi del prodotto.               │
+ │  Scopri di più  posthog.com                                                │
  ╰────────────────────────────────────────────────────────────────────────────╯
 ╭──────────────────────────────────────────────────────────────────────────────╮
 │                                                                              │
