@@ -1,4 +1,4 @@
-# Report estratto da Agente B (Ciclo 10)
+# Report estratto da Agente B (Ciclo 11)
 
 
   ╭────────────────────────────────────────────────────────────────────────╮
@@ -10,11 +10,11 @@
   ╰────────────────────────────────────────────────────────────────────────╯   █
                                                                           △▽   █
  ╭────────────────────────────────────────────────────────────────────────────╮
- │ Ottieni $20 per provare Exa                                  Ad [Report 5] │
- │ L'API di ricerca web per i tuoi agenti                                     │
- │  Ottieni $20 di crediti  dashboard.exa.ai                                  │
+ │ Plan technical projects with MindManager                     Ad [Report 6] │
+ │ Turn your technical project plans into work with MindManager's visual…     │
+ │  Start Planning  mindmanager.sjv.io                                        │
  ╰────────────────────────────────────────────────────────────────────────────╯
- 32m left · 17.1K (13%)                                          ✕ End session
+ 28m left · 17.1K (13%)                                          ✕ End session
 ╭──────────────────────────────────────────────────────────────────────────────╮
 │                                                                              │
 │  ▍Enter a coding task or / for commands                                      │
