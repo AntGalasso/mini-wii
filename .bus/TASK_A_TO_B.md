@@ -1,4 +1,4 @@
-# Task estratto da Agente A (Ciclo 104)
+# Task estratto da Agente A (Ciclo 105)
 
 
 
@@ -11,9 +11,9 @@
   ╰────────────────────────────────────────────────────────────────────────╯   █
                                                                           △▽   █
  ╭────────────────────────────────────────────────────────────────────────────╮
- │ Scale Your Backend with Vetted Engineers                    Ad [Report 64] │
- │ Scale your technical workflows with ProjectAAL's vetted engineers and…     │
- │  Scale Now  projectaal.com                                                 │
+ │ Run coding agents on your existing AI subscriptions         Ad [Report 67] │
+ │ Orchestrate coding agents and clients with OpenLLM's developer-focuse…     │
+ │  Start Building  openllm.sh                                                │
  ╰────────────────────────────────────────────────────────────────────────────╯
 ╭──────────────────────────────────────────────────────────────────────────────╮
 │                                                                              │

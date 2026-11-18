@@ -1,4 +1,4 @@
-# Report estratto da Agente B (Ciclo 104)
+# Report estratto da Agente B (Ciclo 105)
 
 
 
@@ -11,9 +11,9 @@
   ╰────────────────────────────────────────────────────────────────────────╯   █
                                                                           △▽   █
  ╭────────────────────────────────────────────────────────────────────────────╮
- │ Manage app servers with SPanel                              Ad [Report 90] │
- │ Automate your infrastructure management and deployments with SPanel's…     │
- │  Get Started  imp.scalahosting.com                                         │
+ │ Build and preview web apps with Bolt.new                    Ad [Report 82] │
+ │ Automate your development workflow by connecting GitHub and publishin…     │
+ │  Start Building  boltai.pxf.io                                             │
  ╰────────────────────────────────────────────────────────────────────────────╯
 ╭──────────────────────────────────────────────────────────────────────────────╮
 │                                                                              │
