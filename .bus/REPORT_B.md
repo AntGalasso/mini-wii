@@ -1,4 +1,4 @@
-# Report estratto da Agente B (Ciclo 71)
+# Report estratto da Agente B (Ciclo 72)
 
 
   ╭────────────────────────────────────────────────────────────────────────╮
@@ -10,11 +10,11 @@
   ╰────────────────────────────────────────────────────────────────────────╯   █
                                                                           △▽   █
  ╭────────────────────────────────────────────────────────────────────────────╮
- │ Build and preview web apps with Bolt.new                    Ad [Report 59] │
- │ Automate your development workflow and connect GitHub or Supabase wit…     │
- │  Start Building  boltai.pxf.io                                             │
+ │ Mantieni gli agenti operativi online                        Ad [Report 22] │
+ │ Dedica meno tempo a risolvere crash e blocchi dei bot.                     │
+ │  Scopri di più  browserless.io                                             │
  ╰────────────────────────────────────────────────────────────────────────────╯
- 12m left · 17.1K (13%)                                          ✕ End session
+ 9m left · 17.1K (13%)                                           ✕ End session
 ╭──────────────────────────────────────────────────────────────────────────────╮
 │                                                                              │
 │  ▍Enter a coding task or / for commands                                      │

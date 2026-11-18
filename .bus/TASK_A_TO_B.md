@@ -1,4 +1,4 @@
-# Task estratto da Agente A (Ciclo 71)
+# Task estratto da Agente A (Ciclo 72)
 
 
   ╭────────────────────────────────────────────────────────────────────────╮
@@ -10,11 +10,11 @@
   ╰────────────────────────────────────────────────────────────────────────╯   █
                                                                           △▽   █
  ╭────────────────────────────────────────────────────────────────────────────╮
- │ Ottieni $20 per provare Exa                                 Ad [Report 58] │
+ │ Ottieni $20 per provare Exa                                  Ad [Report 8] │
  │ L'API di ricerca web per i tuoi agenti                                     │
  │  Ottieni $20 di crediti  dashboard.exa.ai                                  │
  ╰────────────────────────────────────────────────────────────────────────────╯
- 14m left · 17.1K (13%)                                          ✕ End session
+ 10m left · 17.1K (13%)                                          ✕ End session
 ╭──────────────────────────────────────────────────────────────────────────────╮
 │                                                                              │
 │  ▍Enter a coding task or / for commands                                      │
