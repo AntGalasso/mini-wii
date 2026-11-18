@@ -1,4 +1,4 @@
-# Task estratto da Agente A (Ciclo 113)
+# Task estratto da Agente A (Ciclo 114)
 
 
 
@@ -11,9 +11,9 @@
   ╰────────────────────────────────────────────────────────────────────────╯   █
                                                                           △▽   █
  ╭────────────────────────────────────────────────────────────────────────────╮
- │ Run coding agents on your existing AI subscriptions         Ad [Report 39] │
- │ Orchestrate your multi-agent workflows with OpenLLM's developer-focus…     │
- │  Start Building  openllm.sh                                                │
+ │ Diventa globale senza toccare il tuo JSX                    Ad [Report 86] │
+ │ Aggiungere lingue di solito significa refattorizzare i componenti e g…     │
+ │  Provalo gratis  weglot.com                                                │
  ╰────────────────────────────────────────────────────────────────────────────╯
 ╭──────────────────────────────────────────────────────────────────────────────╮
 │                                                                              │
