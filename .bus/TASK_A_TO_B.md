@@ -1,4 +1,4 @@
-# Task estratto da Agente A (Ciclo 68)
+# Task estratto da Agente A (Ciclo 69)
 
 
   ╭────────────────────────────────────────────────────────────────────────╮
@@ -10,11 +10,11 @@
   ╰────────────────────────────────────────────────────────────────────────╯   █
                                                                           △▽   █
  ╭────────────────────────────────────────────────────────────────────────────╮
- │ Run coding agents on your existing AI subscriptions         Ad [Report 46] │
- │ Orchestrate your multi-agent workflows with OpenLLM's developer-focus…     │
- │  Start Building  openllm.sh                                                │
+ │ Prova Exa e ottieni $20 di crediti API                      Ad [Report 52] │
+ │ L'API di ricerca web Exa recupera i dati migliori e in tempo reale pe…     │
+ │  Richiedi $20 di crediti  dashboard.exa.ai                                 │
  ╰────────────────────────────────────────────────────────────────────────────╯
- 24m left · 17.1K (13%)                                          ✕ End session
+ 20m left · 17.1K (13%)                                          ✕ End session
 ╭──────────────────────────────────────────────────────────────────────────────╮
 │                                                                              │
 │  ▍Enter a coding task or / for commands                                      │
