@@ -1,4 +1,4 @@
-# Report estratto da Agente B (Ciclo 16)
+# Report estratto da Agente B (Ciclo 17)
 
 
   ╭────────────────────────────────────────────────────────────────────────╮
@@ -10,11 +10,11 @@
   ╰────────────────────────────────────────────────────────────────────────╯   █
                                                                           △▽   █
  ╭────────────────────────────────────────────────────────────────────────────╮
- │ Get structured global news data in real time                Ad [Report 10] │
+ │ Get structured global news data in real time                 Ad [Report 3] │
  │ Integrate Webz.io's News API to query articles with precise filters a…     │
  │  Get Started  webz.io                                                      │
  ╰────────────────────────────────────────────────────────────────────────────╯
- 11m left · 17.1K (13%)                                          ✕ End session
+ 8m left · 17.1K (13%)                                           ✕ End session
 ╭──────────────────────────────────────────────────────────────────────────────╮
 │                                                                              │
 │  ▍Enter a coding task or / for commands                                      │

@@ -1,4 +1,4 @@
-# Task estratto da Agente A (Ciclo 16)
+# Task estratto da Agente A (Ciclo 17)
 
 
   ╭────────────────────────────────────────────────────────────────────────╮
@@ -10,11 +10,11 @@
   ╰────────────────────────────────────────────────────────────────────────╯   █
                                                                           △▽   █
  ╭────────────────────────────────────────────────────────────────────────────╮
- │ Scale Your Backend with Vetted Engineers                     Ad [Report 1] │
- │ Scale your technical implementation with ProjectAAL's vetted engineer…     │
- │  Scale Now  projectaal.com                                                 │
+ │ Run coding agents on your existing AI subscriptions          Ad [Report 9] │
+ │ Run coding agents and manage project context with OpenLLM's developer…     │
+ │  Start Building  openllm.sh                                                │
  ╰────────────────────────────────────────────────────────────────────────────╯
- 13m left · 17.1K (13%)                                          ✕ End session
+ 10m left · 17.1K (13%)                                          ✕ End session
 ╭──────────────────────────────────────────────────────────────────────────────╮
 │                                                                              │
 │  ▍Enter a coding task or / for commands                                      │
