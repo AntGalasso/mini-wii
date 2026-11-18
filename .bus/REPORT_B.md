@@ -1,4 +1,4 @@
-# Report estratto da Agente B (Ciclo 43)
+# Report estratto da Agente B (Ciclo 44)
 
 
 
@@ -11,9 +11,9 @@
   ╰────────────────────────────────────────────────────────────────────────╯   █
                                                                           △▽   █
  ╭────────────────────────────────────────────────────────────────────────────╮
- │ Ottieni $20 per provare Exa                                 Ad [Report 18] │
- │ L'API di ricerca web per i tuoi agenti                                     │
- │  Ottieni $20 di crediti  dashboard.exa.ai                                  │
+ │ Send SMS, WhatsApp, and RCS via one API                     Ad [Report 31] │
+ │ Send SMS, WhatsApp, and RCS from your AI agents with Sent's MCP serve…     │
+ │  Connect your agent  lp.sent.dm                                            │
  ╰────────────────────────────────────────────────────────────────────────────╯
 ╭──────────────────────────────────────────────────────────────────────────────╮
 │                                                                              │
