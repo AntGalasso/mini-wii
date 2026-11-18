@@ -1,19 +1,19 @@
-# Task estratto da Agente A (Ciclo 97)
+# Task estratto da Agente A (Ciclo 98)
 
 
 
   ╭────────────────────────────────────────────────────────────────────────╮
   │ Error                                                                  │
-  │ Freebuff did not send this message to the model. It breaks the usage   │
-  │ policy (Scripted or automated use): it is the same message sent over   │
-  │ and over, or automated account or site farming. It counts as strike 8  │   ▄
-  │ today. Strikes reset at midnight, when your daily hours refill.        │   █
+  │ This model purchase was refunded to the daily pool or wallet that paid │
+  │ for it. Start a new session to try again. The model may be busy or     │
+  │ unavailable right now: send your message again to retry, or pick       │   ▄
+  │ another model with /model.                                             │   █
   ╰────────────────────────────────────────────────────────────────────────╯   █
                                                                           △▽   █
  ╭────────────────────────────────────────────────────────────────────────────╮
- │ Mantieni gli agenti operativi online                        Ad [Report 76] │
- │ Dedica meno tempo a risolvere crash e blocchi dei bot.                     │
- │  Scopri di più  browserless.io                                             │
+ │ Unify SMS, WhatsApp, and RCS with one API                   Ad [Report 41] │
+ │ Sent messaging API: claim $10 in free credits, then send a test SMS f…     │
+ │  Claim $10 free credits  lp.sent.dm                                        │
  ╰────────────────────────────────────────────────────────────────────────────╯
 ╭──────────────────────────────────────────────────────────────────────────────╮
 │                                                                              │
