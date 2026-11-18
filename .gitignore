@@ -1,0 +1,6 @@
+.bus/ready_for_a
+.bus/ready_for_b
+node_modules/
+venv/
+__pycache__/
+.env
