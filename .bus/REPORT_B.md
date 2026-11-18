@@ -1,4 +1,4 @@
-# Report estratto da Agente B (Ciclo 87)
+# Report estratto da Agente B (Ciclo 88)
 
 
 
@@ -11,9 +11,9 @@
   ╰────────────────────────────────────────────────────────────────────────╯   █
                                                                           △▽   █
  ╭────────────────────────────────────────────────────────────────────────────╮
- │ Build and preview web apps with Bolt.new                    Ad [Report 75] │
- │ Automate your development workflow by connecting GitHub and publishin…     │
- │  Start Building  boltai.pxf.io                                             │
+ │ Proxy infrastructure for developer QA                       Ad [Report 76] │
+ │ Automate your testing workflows with IPRoyal's IP allowlists and prog…     │
+ │  Start Testing  iproyal.com                                                │
  ╰────────────────────────────────────────────────────────────────────────────╯
 ╭──────────────────────────────────────────────────────────────────────────────╮
 │                                                                              │
