@@ -1,4 +1,4 @@
-# Report estratto da Agente B (Ciclo 76)
+# Report estratto da Agente B (Ciclo 77)
 
 
 
@@ -11,9 +11,9 @@
   ╰────────────────────────────────────────────────────────────────────────╯   █
                                                                           △▽   █
  ╭────────────────────────────────────────────────────────────────────────────╮
- │ Build your app with OnSpace AI                              Ad [Report 35] │
- │ Automate your development workflow and build iOS, Android, and web pr…     │
- │  Start Building  onspaceai.sjv.io                                          │
+ │ Proxy infrastructure for developer QA                       Ad [Report 65] │
+ │ Automate your testing workflows with IPRoyal's IP allowlists and prog…     │
+ │  Start Testing  iproyal.com                                                │
  ╰────────────────────────────────────────────────────────────────────────────╯
 ╭──────────────────────────────────────────────────────────────────────────────╮
 │                                                                              │
