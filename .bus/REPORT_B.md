@@ -1,4 +1,4 @@
-# Report estratto da Agente B (Ciclo 109)
+# Report estratto da Agente B (Ciclo 110)
 
 
 
@@ -7,13 +7,13 @@
   │ This model purchase was refunded to the daily pool or wallet that paid │
   │ for it. Start a new session to try again. The model may be busy or     │
   │ unavailable right now: send your message again to retry, or pick       │
-  │ another model with /model.                                             │   █
+  │ another model with /model.                                             │
   ╰────────────────────────────────────────────────────────────────────────╯   █
                                                                           △▽   █
  ╭────────────────────────────────────────────────────────────────────────────╮
- │ Ottieni $20 per provare Exa                                 Ad [Report 95] │
- │ L'API di ricerca web per i tuoi agenti                                     │
- │  Ottieni $20 di crediti  dashboard.exa.ai                                  │
+ │ Integrate support workflows with SparrowDesk                Ad [Report 44] │
+ │ Automate complex workflows and support with SparrowDesk AI agents and…     │
+ │  Try SparrowDesk  sparrowdesk.com                                          │
  ╰────────────────────────────────────────────────────────────────────────────╯
 ╭──────────────────────────────────────────────────────────────────────────────╮
 │                                                                              │
