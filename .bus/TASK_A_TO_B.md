@@ -1,4 +1,4 @@
-# Task estratto da Agente A (Ciclo 107)
+# Task estratto da Agente A (Ciclo 108)
 
 
 
@@ -11,9 +11,9 @@
   ╰────────────────────────────────────────────────────────────────────────╯   █
                                                                           △▽   █
  ╭────────────────────────────────────────────────────────────────────────────╮
- │ Integrate support workflows with SparrowDesk                Ad [Report 74] │
- │ Orchestrate complex workflows and support tasks with SparrowDesk AI a…     │
- │  Try SparrowDesk  sparrowdesk.com                                          │
+ │ Headless browsers without the infrastructure                Ad [Report 77] │
+ │ Connect Playwright or Puppeteer to Browserless for browser automation…     │
+ │  Explore Browserless  browserless.io                                       │
  ╰────────────────────────────────────────────────────────────────────────────╯
 ╭──────────────────────────────────────────────────────────────────────────────╮
 │                                                                              │
