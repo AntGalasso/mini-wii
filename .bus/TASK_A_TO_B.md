@@ -1,4 +1,4 @@
-# Task estratto da Agente A (Ciclo 110)
+# Task estratto da Agente A (Ciclo 111)
 
 
 
@@ -11,9 +11,9 @@
   ╰────────────────────────────────────────────────────────────────────────╯   █
                                                                           △▽   █
  ╭────────────────────────────────────────────────────────────────────────────╮
- │ Ti è stato chiesto di creare un tool per i costi?           Ad [Report 83] │
- │ Costruisci su Costory, non da zero. Una dashboard FinOps è gratuita, …     │
- │  Scopri di più  costory.io                                                 │
+ │ Send SMS, WhatsApp, and RCS via one API                     Ad [Report 33] │
+ │ Automate your multi-agent workflows with Sent's single API for seamle…     │
+ │  Get Started  lp.sent.dm                                                   │
  ╰────────────────────────────────────────────────────────────────────────────╯
 ╭──────────────────────────────────────────────────────────────────────────────╮
 │                                                                              │
