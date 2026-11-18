@@ -175,6 +175,9 @@ io.on('connection', (socket) => {
         protocol: PROTOCOL,
       });
 
+      // Stato iniziale della TV al solo controller appena registrato.
+      socket.emit('tv:presence', { online: tvs.size > 0, total: tvs.size });
+
       io.to('tvs').emit('controller:connected', {
         id: record.id,
         name: record.name,

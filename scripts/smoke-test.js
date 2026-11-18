@@ -105,6 +105,7 @@ async function run() {
     currentCheck = 'controller:ready / controller:connected';
     const connectedPromise = waitFor(tv, 'controller:connected');
     const readyPromise = waitFor(controller, 'controller:ready');
+    const presencePromise = waitFor(controller, 'tv:presence');
     controller.emit('controller:hello', { name: 'Test Wiimote' });
     const ctrlReady = await readyPromise;
     assert(typeof ctrlReady.id === 'string' && ctrlReady.id.length > 0, 'id non è una stringa');
@@ -113,6 +114,11 @@ async function run() {
       `slot non valido: ${ctrlReady.slot}`
     );
     ok('controller:ready con id e slot >= 1');
+
+    const presence = await presencePromise;
+    assert(presence.online === true, `online atteso true, ricevuto ${presence.online}`);
+    assert(presence.total === 1, `total atteso 1, ricevuto ${presence.total}`);
+    ok('tv:presence iniziale al controller');
 
     const connected = await connectedPromise;
     assert(connected.id === ctrlReady.id, 'id controller diverso da quello atteso');

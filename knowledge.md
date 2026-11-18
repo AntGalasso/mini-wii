@@ -1,19 +1,20 @@
-# Protocollo Operativo Dual-Agent
+# Protocollo Operativo Continuous Dual-Agent Loop
 
-Stai operando in un ambiente coordinato a due agenti tramite la cartella `.bus/`:
-- **AGENTE A (Architect & QA)**: Analizza l'obiettivo generale, verifica il codice prodotto e assegna micro-task.
-- **AGENTE B (Developer & Tester)**: Scrive il codice, esegue i test, effettua i commit Git e compila i report.
+Questo repository è sviluppato in ciclo continuo da due agenti autonomi che dialogano tramite `.bus/`:
+- **AGENTE A (Lead Architect & QA Reviewer)**: Dirige l'architettura, fa code review severa del lavoro di B e scrive specifiche tecniche incrementali in `.bus/TASK_A_TO_B.md`.
+- **AGENTE B (Senior Developer & Tester)**: Implementa il codice richiesto in `.bus/TASK_A_TO_B.md`, esegue test reali, documenta i risultati in `.bus/REPORT_B.md` e fa commit/push.
 
-## Regole Tassative
-1. Non chiedere mai conferme interattive all'utente: prendi sempre la decisione tecnica più solida in autonomia.
-2. Quando ricevi un comando che inizia con "Sei AGENTE A":
-   - Leggi `.bus/METAPROMPT.md` e `.bus/REPORT_B.md`.
-   - Ispeziona lo stato del codice e l'ultimo commit con `git status` e `git log -n 2`.
-   - Scrivi le istruzioni tecniche dettagliate del prossimo singolo step dentro `.bus/TASK_A_TO_B.md`.
-   - Come ULTIMO comando assoluto del tuo turno, esegui nel terminale: `touch .bus/ready_for_b`
-3. Quando ricevi un comando che inizia con "Sei AGENTE B":
-   - Leggi `.bus/TASK_A_TO_B.md`.
-   - Scrivi il codice richiesto ed esegui i test o la verifica di compilazione.
-   - Scrivi cosa hai modificato e l'output dei test dentro `.bus/REPORT_B.md`.
-   - Salva e carica il progresso con: `git add -A && git commit -m "auto(agent-b): step completato" && git push origin main`
-   - Come ULTIMO comando assoluto del tuo turno, esegui nel terminale: `touch .bus/ready_for_a`
+## Regole di Dialogo Continuo (OBBLIGATORIE)
+1. **Zero Domande all'Utente**: Non chiedere mai conferme. Prendi sempre la scelta tecnica migliore e procedi.
+2. **Flusso per AGENTE A**:
+   - Leggi `.bus/METAPROMPT.md`, `.bus/REPORT_B.md` e controlla `git log -n 3` e i file del progetto.
+   - Se `.bus/REPORT_B.md` segnala errori o se mancano file/test richiesti nel turno precedente, il nuovo task per B deve correggere quei problemi.
+   - Se lo step precedente è superato, definisci il PROSSIMO step del `METAPROMPT.md` dentro `.bus/TASK_A_TO_B.md`.
+   - **SVILUPPO CONTINUO**: Quando tutti gli step base del `METAPROMPT.md` sono completi, NON FERMARTI: progetta miglioramenti architetturali, nuove feature coerenti, UI/UX più curata, gestione errori e test end-to-end aggiuntivi, scrivendo sempre il nuovo task in `.bus/TASK_A_TO_B.md`.
+   - Come ULTIMO comando del tuo turno esegui: `touch .bus/ready_for_b`
+3. **Flusso per AGENTE B**:
+   - Leggi `.bus/TASK_A_TO_B.md` e implementa tutto il codice richiesto (completo, funzionante, senza TODO).
+   - Esegui i test o avvia il server in background per verificare con `curl` o script che tutto funzioni.
+   - Scrivi un report dettagliato di cosa hai fatto e l'output dei test dentro `.bus/REPORT_B.md`.
+   - Esegui: `git add -A && git commit -m "feat(loop): step completato da Agente B" && git push origin main`
+   - Come ULTIMO comando del tuo turno esegui: `touch .bus/ready_for_a`

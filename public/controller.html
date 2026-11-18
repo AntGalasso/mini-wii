@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0b0f14">
+<title>Wiimote — Controller</title>
+<style>
+  * { box-sizing: border-box; }
+
+  html, body {
+    height: 100%;
+    margin: 0;
+    overscroll-behavior: none;
+  }
+
+  body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    color: #0d1b26;
+    background: radial-gradient(circle at 50% 0%, #1b2733 0%, #0b0f14 62%);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    touch-action: none;
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .device {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: min(92vw, 420px);
+    height: min(92vh, 780px);
+    height: min(92dvh, 780px);
+    padding: 14px 14px calc(12px + env(safe-area-inset-bottom, 0px));
+    border-radius: 30px;
+    background: linear-gradient(170deg, #ffffff 0%, #eef5fb 38%, #d7e5f1 78%, #c2d4e4 100%);
+    box-shadow:
+      0 24px 60px rgba(0, 0, 0, .55),
+      inset 0 1px 0 #ffffff,
+      inset 0 -2px 6px rgba(0, 0, 0, .12);
+    overflow: hidden;
+    touch-action: none;
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* ------------------------------- header ------------------------------- */
+
+  .status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 2px 4px 0;
+    font-size: 13px;
+    flex: none;
+  }
+
+  .dot {
+    flex: none;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #7f8c99;
+    box-shadow: 0 0 0 3px rgba(127, 140, 153, .18);
+    transition: background .2s ease, box-shadow .2s ease;
+  }
+
+  .dot[data-state="online"] {
+    background: #1fbf6b;
+    box-shadow: 0 0 0 3px rgba(31, 191, 107, .22);
+  }
+
+  .dot[data-state="waiting"] {
+    background: #f0a92a;
+    box-shadow: 0 0 0 3px rgba(240, 169, 42, .22);
+  }
+
+  .dot[data-state="error"] {
+    background: #e0453c;
+    box-shadow: 0 0 0 3px rgba(224, 69, 60, .22);
+  }
+
+  .status-text {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    color: #22313d;
+    font-weight: 600;
+    letter-spacing: .1px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .slot-badge {
+    flex: none;
+    padding: 6px 9px;
+    border-radius: 999px;
+    background: #22313d;
+    color: #eaf3fb;
+    font: 600 11px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+
+  /* ---------------------------- gyro panel ------------------------------ */
+
+  .gyro {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: none;
+  }
+
+  .btn-permission {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 14px;
+    background: linear-gradient(180deg, #2c6cf6, #1b4fd1);
+    box-shadow: 0 6px 14px rgba(27, 79, 209, .3);
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: .2px;
+  }
+
+  .btn-permission:active,
+  .btn-permission.pressed {
+    transform: scale(.97);
+    filter: brightness(.9);
+  }
+
+  .hint {
+    margin: 0;
+    color: #4c6274;
+    font-size: 12px;
+    text-align: center;
+  }
+
+  .readout {
+    padding: 6px 8px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, .55);
+    color: #4c6274;
+    font: 500 11px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace;
+    letter-spacing: .3px;
+    text-align: center;
+  }
+
+  /* ---------------------------- fallback -------------------------------- */
+
+  .banner {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: none;
+    padding: 10px 11px;
+    border: 1px solid #e8c76a;
+    border-radius: 12px;
+    background: #fff4d6;
+  }
+
+  .banner p {
+    margin: 0;
+    color: #6b5312;
+    font-size: 12px;
+    line-height: 1.4;
+  }
+
+  .btn-touch {
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    background: #22313d;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .btn-touch:active {
+    transform: scale(.97);
+    filter: brightness(.9);
+  }
+
+  /* ---------------------------- touch-pad ------------------------------- */
+
+  .touchpad {
+    position: relative;
+    flex: 1 1 auto;
+    min-height: 180px;
+    border: 2px dashed #8ba6bd;
+    border-radius: 18px;
+    background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, .7), rgba(214, 228, 240, .45));
+    overflow: hidden;
+    touch-action: none;
+  }
+
+  .touchpad-label {
+    position: absolute;
+    top: 8px;
+    left: 10px;
+    color: #6e8497;
+    font: 600 10px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+  }
+
+  .touch-dot {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 26px;
+    height: 26px;
+    margin: -13px 0 0 -13px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #5b9bff, #1b4fd1);
+    box-shadow: 0 4px 10px rgba(27, 79, 209, .4);
+    opacity: .9;
+    pointer-events: none;
+  }
+
+  /* ------------------------------- tasti -------------------------------- */
+
+  .btn-b {
+    flex: none;
+    height: 58px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(180deg, #ffffff, #d3dfea);
+    box-shadow: 0 4px 0 #9fb3c4, 0 8px 16px rgba(20, 40, 60, .18);
+    color: #22313d;
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: 1px;
+  }
+
+  .btn-b:active,
+  .btn-b.is-down {
+    transform: translateY(3px) scale(.99);
+    filter: brightness(.9);
+    box-shadow: 0 1px 0 #9fb3c4;
+  }
+
+  .bottom {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 12px;
+    flex: none;
+    padding-bottom: 4px;
+  }
+
+  .btn-calibra {
+    height: 46px;
+    padding: 0 18px;
+    border: none;
+    border-radius: 999px;
+    background: linear-gradient(180deg, #ffffff, #d8e4ee);
+    box-shadow: 0 3px 0 #a5b8c8;
+    color: #22313d;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: .4px;
+  }
+
+  .btn-calibra:active,
+  .btn-calibra.is-down {
+    transform: translateY(2px) scale(.98);
+    filter: brightness(.94);
+    box-shadow: 0 1px 0 #a5b8c8;
+  }
+
+  .btn-a {
+    flex: none;
+    width: 110px;
+    height: 110px;
+    border: none;
+    border-radius: 50%;
+    background: radial-gradient(circle at 38% 30%, #8fb8ff, #2c6cf6 55%, #123f9e);
+    box-shadow:
+      0 8px 0 #10327c,
+      0 14px 26px rgba(16, 50, 124, .35),
+      inset 0 2px 6px rgba(255, 255, 255, .5);
+    color: #ffffff;
+    font-size: 40px;
+    font-weight: 800;
+  }
+
+  .btn-a:active,
+  .btn-a.is-down {
+    transform: translateY(5px) scale(.98);
+    filter: brightness(1.08);
+    box-shadow: 0 3px 0 #10327c, inset 0 2px 6px rgba(255, 255, 255, .35);
+  }
+
+  .footer {
+    display: flex;
+    justify-content: space-between;
+    flex: none;
+    padding: 0 4px;
+    color: #7b90a2;
+    font-size: 10px;
+    letter-spacing: .6px;
+  }
+
+  .hidden { display: none !important; }
+
+  @media (max-height: 640px) {
+    .device { gap: 8px; padding: 10px 10px calc(8px + env(safe-area-inset-bottom, 0px)); }
+    .btn-a { width: 92px; height: 92px; font-size: 34px; }
+    .btn-b { height: 48px; }
+    .touchpad { min-height: 150px; }
+  }
+</style>
+</head>
+<body>
+<main class="device" id="device">
+  <header class="status">
+    <span id="status-dot" class="dot" data-state="connecting" aria-hidden="true"></span>
+    <span id="status-text" class="status-text" role="status" aria-live="polite">Connessione…</span>
+    <span id="slot-badge" class="slot-badge">Slot —</span>
+  </header>
+
+  <section class="gyro" id="gyro-panel">
+    <button type="button" id="btn-permission" class="btn-permission" aria-label="Attiva giroscopio">Attiva giroscopio</button>
+    <p class="hint">Tieni il telefono in verticale, punta verso la TV</p>
+    <div id="gyro-readout" class="readout" aria-hidden="true">α — · β — · γ —</div>
+  </section>
+
+  <div id="fallback-banner" class="banner hidden">
+    <p>Giroscopio non disponibile su HTTP. Usa il touch-pad o apri la pagina in HTTPS.</p>
+    <button type="button" id="btn-use-touch" class="btn-touch" aria-label="Usa il touch-pad">Usa il touch-pad</button>
+  </div>
+
+  <div id="touchpad" class="touchpad hidden" role="application" aria-label="Touch-pad di movimento">
+    <span class="touchpad-label">Touch-pad</span>
+    <span id="touch-dot" class="touch-dot"></span>
+  </div>
+
+  <button type="button" id="btn-b" class="btn-b" data-button="B" aria-label="Tasto B">B</button>
+
+  <div class="bottom">
+    <button type="button" id="btn-calibra" class="btn-calibra" data-button="CALIBRA" aria-label="Calibra">⌖ Calibra</button>
+    <button type="button" id="btn-a" class="btn-a" data-button="A" aria-label="Tasto A">A</button>
+  </div>
+
+  <footer class="footer">
+    <span>Wiimote</span>
+    <span>protocollo 1</span>
+  </footer>
+</main>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  var socket = io({ transports: ['websocket', 'polling'] });
+
+  var els = {
+    dot: document.getElementById('status-dot'),
+    statusText: document.getElementById('status-text'),
+    slot: document.getElementById('slot-badge'),
+    gyroPanel: document.getElementById('gyro-panel'),
+    permission: document.getElementById('btn-permission'),
+    readout: document.getElementById('gyro-readout'),
+    banner: document.getElementById('fallback-banner'),
+    useTouch: document.getElementById('btn-use-touch'),
+    touchpad: document.getElementById('touchpad'),
+    touchDot: document.getElementById('touch-dot')
+  };
+
+  var state = {
+    mode: 'gyro',                 // 'gyro' | 'fallback'
+    gotOrientation: false,
+    listening: false,
+    helloBlocked: false,
+    ready: false,
+    tvOnline: false,
+    tvTotal: 0,
+    id: null,
+    slot: null,
+    protocol: null,
+    fallbackTimer: null,
+    offset: { alpha: 0, beta: 0, gamma: 0 },
+    filtered: null,
+    raw: { alpha: 0, beta: 0, gamma: 0 },
+    lastSent: 0,
+    lastReadout: 0,
+    touchActive: false,
+    touchPointerId: null
+  };
+
+  /* ----------------------------- helper ------------------------------- */
+
+  function normalizeAngle(value) {
+    if (!isFinite(value)) return 0;
+    var v = value % 360;
+    if (v < 0) v += 360;
+    return v;
+  }
+
+  function finiteOr(value, fallback) {
+    var n = Number(value);
+    return Number.isFinite(n) ? n : fallback;
+  }
+
+  function setStatus(kind, text) {
+    try {
+      els.dot.setAttribute('data-state', kind);
+      els.statusText.textContent = text;
+    } catch (err) { /* mai bloccante */ }
+  }
+
+  function updateConnectionStatus() {
+    if (state.helloBlocked || !state.ready) return;
+    if (state.tvOnline) setStatus('online', 'Connesso — TV online');
+    else setStatus('waiting', 'Connesso — in attesa TV');
+  }
+
+  function safeVibrate(pattern) {
+    try {
+      if (navigator.vibrate) navigator.vibrate(pattern);
+    } catch (err) { /* vibrazione non disponibile */ }
+  }
+
+  /* ------------------------- invio movimento -------------------------- */
+
+  // Unico punto di invio (giroscopio e touch-pad), max 60 Hz, niente batching.
+  function sendMotion(alpha, beta, gamma, ax, ay, az, swing) {
+    if (!socket.connected) return;
+    var now = Date.now();
+    if (now - state.lastSent < 16) return;
+
+    var payload = {
+      alpha: alpha,
+      beta: beta,
+      gamma: gamma,
+      ax: ax,
+      ay: ay,
+      az: az,
+      swing: swing,
+      t: now
+    };
+
+    for (var key in payload) {
+      if (!Number.isFinite(payload[key])) return; // pacchetto incompleto: scarta
+    }
+
+    state.lastSent = now;
+    try {
+      socket.emit('controller:motion', payload);
+    } catch (err) { /* ignora */ }
+  }
+
+  /* ---------------------------- giroscopio ---------------------------- */
+
+  function updateReadout(alpha, beta, gamma) {
+    var now = Date.now();
+    if (now - state.lastReadout < 100) return; // ~10 Hz
+    state.lastReadout = now;
+    try {
+      els.readout.textContent =
+        'α ' + alpha.toFixed(1) +
+        ' · β ' + beta.toFixed(1) +
+        ' · γ ' + gamma.toFixed(1);
+    } catch (err) { /* ignora */ }
+  }
+
+  function onOrientation(event) {
+    try {
+      if (state.mode === 'fallback') return;
+
+      var a = Number(event.alpha);
+      var b = Number(event.beta);
+      var g = Number(event.gamma);
+      if (!isFinite(a) || !isFinite(b) || !isFinite(g)) return;
+
+      state.raw.alpha = a;
+      state.raw.beta = b;
+      state.raw.gamma = g;
+
+      if (!state.gotOrientation) {
+        state.gotOrientation = true;
+        if (state.fallbackTimer) {
+          clearTimeout(state.fallbackTimer);
+          state.fallbackTimer = null;
+        }
+      }
+
+      // Offset di calibrazione applicati qui: il server non li calcola.
+      var na = a - state.offset.alpha;
+      var nb = b - state.offset.beta;
+      var ng = g - state.offset.gamma;
+
+      // Filtro passa-a-low anti-jitter (nessun filtro sull'accelerazione).
+      if (!state.filtered) {
+        state.filtered = { alpha: na, beta: nb, gamma: ng };
+      } else {
+        state.filtered.alpha = 0.25 * na + 0.75 * state.filtered.alpha;
+        state.filtered.beta = 0.25 * nb + 0.75 * state.filtered.beta;
+        state.filtered.gamma = 0.25 * ng + 0.75 * state.filtered.gamma;
+      }
+
+      var fa = normalizeAngle(state.filtered.alpha);
+      var fb = state.filtered.beta;
+      var fg = state.filtered.gamma;
+
+      var acc = event.accelerationIncludingGravity || event.acceleration;
+      var ax = 0;
+      var ay = 0;
+      var az = 9.81;
+      if (acc) {
+        var x = Number(acc.x);
+        var y = Number(acc.y);
+        var z = Number(acc.z);
+        if (isFinite(x) && isFinite(y) && isFinite(z)) {
+          ax = x;
+          ay = y;
+          az = z;
+        }
+      }
+
+      var swing = Math.round(Math.abs(Math.hypot(ax, ay, az) - 9.81) * 1000) / 1000;
+      if (!isFinite(swing) || swing < 0) swing = 0;
+
+      sendMotion(fa, fb, fg, ax, ay, az, swing);
+      updateReadout(fa, fb, fg);
+    } catch (err) { /* nessun errore non gestito */ }
+  }
+
+  function startGyro() {
+    if (!state.listening) {
+      window.addEventListener('deviceorientation', onOrientation, { passive: true });
+      state.listening = true;
+    }
+    els.permission.classList.add('hidden');
+
+    if (state.fallbackTimer) clearTimeout(state.fallbackTimer);
+    // Fallback automatico: nessun evento valido entro 1500 ms dal tap.
+    state.fallbackTimer = setTimeout(function () {
+      state.fallbackTimer = null;
+      if (!state.gotOrientation && state.mode !== 'fallback') activateFallback();
+    }, 1500);
+  }
+
+  function activateFallback() {
+    try {
+      state.mode = 'fallback';
+      if (state.fallbackTimer) {
+        clearTimeout(state.fallbackTimer);
+        state.fallbackTimer = null;
+      }
+      els.gyroPanel.classList.add('hidden');
+      els.banner.classList.remove('hidden');
+      els.touchpad.classList.remove('hidden');
+      centerTouchDot();
+    } catch (err) { /* ignora */ }
+  }
+
+  // Tap esplicito: su iOS requestPermission() deve partire nello stesso gesto.
+  els.permission.addEventListener('click', function () {
+    try {
+      if (!('DeviceOrientationEvent' in window)) {
+        activateFallback();
+        return;
+      }
+
+      if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+        var request = DeviceOrientationEvent.requestPermission(); // nessun await prima
+        request.then(function (result) {
+          if (result === 'granted') {
+            startGyro();
+          } else {
+            activateFallback();
+          }
+        }).catch(function () {
+          activateFallback();
+        });
+      } else {
+        // Android / desktop: nessun permesso esplicito richiesto.
+        startGyro();
+      }
+    } catch (err) {
+      activateFallback();
+    }
+  });
+
+  els.useTouch.addEventListener('click', function () {
+    activateFallback();
+  });
+
+  /* ------------------------------ touch-pad ---------------------------- */
+  /*
+   * Mappatura deterministica (usata anche dalla TV nello STEP 3):
+   *   alpha = x / width * 360              -> [0, 360)   (orizzontale = imbardata)
+   *   beta  = (0.5 - y / height) * 180     -> [-90, 90]   (in alto = positivo)
+   *   gamma = ((x / width) - 0.5) * 90     -> [-45, 45]
+   *   ax = 0, ay = 0, az = 9.81, swing = 0, t = Date.now()
+   */
+
+  function centerTouchDot() {
+    try {
+      els.touchDot.style.left = '50%';
+      els.touchDot.style.top = '50%';
+    } catch (err) { /* ignora */ }
+  }
+
+  function moveTouchDot(x, y) {
+    try {
+      els.touchDot.style.left = x + 'px';
+      els.touchDot.style.top = y + 'px';
+    } catch (err) { /* ignora */ }
+  }
+
+  function sendTouchAt(clientX, clientY) {
+    var rect = els.touchpad.getBoundingClientRect();
+    var width = rect.width || 1;
+    var height = rect.height || 1;
+    var x = Math.min(Math.max(clientX - rect.left, 0), width);
+    var y = Math.min(Math.max(clientY - rect.top, 0), height);
+
+    // 0.9999 evita alpha = 360 (range [0, 360)).
+    var rx = Math.min(x / width, 0.9999);
+    var ry = y / height;
+
+    var alpha = rx * 360;
+    var beta = (0.5 - ry) * 180;
+    var gamma = (rx - 0.5) * 90;
+
+    moveTouchDot(x, y);
+    sendMotion(alpha, beta, gamma, 0, 0, 9.81, 0);
+  }
+
+  els.touchpad.addEventListener('pointerdown', function (event) {
+    try {
+      if (state.mode !== 'fallback') return;
+      state.touchActive = true;
+      state.touchPointerId = event.pointerId;
+      try { els.touchpad.setPointerCapture(event.pointerId); } catch (err) { /* ignora */ }
+      sendTouchAt(event.clientX, event.clientY);
+      event.preventDefault();
+    } catch (err) { /* ignora */ }
+  });
+
+  els.touchpad.addEventListener('pointermove', function (event) {
+    try {
+      if (!state.touchActive || event.pointerId !== state.touchPointerId) return;
+      sendTouchAt(event.clientX, event.clientY);
+      event.preventDefault();
+    } catch (err) { /* ignora */ }
+  });
+
+  function stopTouch(event) {
+    try {
+      if (event.pointerId !== state.touchPointerId) return;
+      state.touchActive = false;
+      state.touchPointerId = null;
+      if (els.touchpad.hasPointerCapture && els.touchpad.hasPointerCapture(event.pointerId)) {
+        try { els.touchpad.releasePointerCapture(event.pointerId); } catch (err) { /* ignora */ }
+      }
+      // Nessun reset a 0: resta valido l'ultimo orientamento.
+    } catch (err) { /* ignora */ }
+  }
+
+  els.touchpad.addEventListener('pointerup', stopTouch);
+  els.touchpad.addEventListener('pointercancel', stopTouch);
+  els.touchpad.addEventListener('pointerleave', stopTouch);
+  els.touchpad.addEventListener('contextmenu', function (event) {
+    event.preventDefault();
+  });
+
+  /* ------------------------------- tasti ------------------------------- */
+
+  function sendButton(button, value) {
+    if (!socket.connected) return; // vibra e anima, ma non invia
+    try {
+      socket.emit('controller:button', { button: button, state: value, t: Date.now() });
+    } catch (err) { /* ignora */ }
+  }
+
+  function calibrate() {
+    try {
+      if (state.mode === 'fallback') {
+        state.offset.alpha = 0;
+        state.offset.beta = 0;
+        state.offset.gamma = 0;
+        centerTouchDot();
+      } else {
+        state.offset.alpha = finiteOr(state.raw.alpha, 0);
+        state.offset.beta = finiteOr(state.raw.beta, 0);
+        state.offset.gamma = finiteOr(state.raw.gamma, 0);
+        state.filtered = { alpha: 0, beta: 0, gamma: 0 };
+      }
+      if (socket.connected) {
+        socket.emit('controller:calibrate', { t: Date.now() });
+      }
+    } catch (err) { /* ignora */ }
+  }
+
+  var buttons = Array.prototype.slice.call(document.querySelectorAll('[data-button]'));
+
+  buttons.forEach(function (buttonEl) {
+    var name = buttonEl.getAttribute('data-button');
+    var downPointers = {};
+
+    buttonEl.addEventListener('pointerdown', function (event) {
+      try {
+        if (downPointers[event.pointerId]) return; // nessun down duplicato
+        downPointers[event.pointerId] = true;
+        buttonEl.classList.add('is-down');
+
+        safeVibrate(name === 'CALIBRA' ? [20, 40, 20] : 15);
+        sendButton(name, 'down');
+        if (name === 'CALIBRA') calibrate();
+
+        if (buttonEl.setPointerCapture) {
+          try { buttonEl.setPointerCapture(event.pointerId); } catch (err) { /* ignora */ }
+        }
+        event.preventDefault();
+      } catch (err) { /* ignora */ }
+    });
+
+    function release(event) {
+      try {
+        if (!downPointers[event.pointerId]) return; // nessun up senza down
+        delete downPointers[event.pointerId];
+        if (Object.keys(downPointers).length > 0) return;
+
+        buttonEl.classList.remove('is-down');
+        sendButton(name, 'up');
+
+        if (buttonEl.hasPointerCapture && buttonEl.hasPointerCapture(event.pointerId)) {
+          try { buttonEl.releasePointerCapture(event.pointerId); } catch (err) { /* ignora */ }
+        }
+      } catch (err) { /* ignora */ }
+    }
+
+    buttonEl.addEventListener('pointerup', release);
+    buttonEl.addEventListener('pointercancel', release);
+    buttonEl.addEventListener('pointerleave', release);
+    buttonEl.addEventListener('contextmenu', function (event) {
+      event.preventDefault();
+    });
+
+    // Ripulisce lo stato locale senza inviare nulla (usato alla disconnect).
+    buttonEl.releaseAll = function () {
+      downPointers = {};
+      buttonEl.classList.remove('is-down');
+    };
+  });
+
+  function releaseAllButtons() {
+    buttons.forEach(function (buttonEl) {
+      try {
+        if (typeof buttonEl.releaseAll === 'function') buttonEl.releaseAll();
+      } catch (err) { /* ignora */ }
+    });
+  }
+
+  /* ------------------------------ socket ------------------------------- */
+
+  socket.on('connect', function () {
+    try {
+      releaseAllButtons();
+      state.lastSent = 0;
+      setStatus('connecting', 'Connessione…');
+      if (!state.helloBlocked) {
+        socket.emit('controller:hello', { name: 'Wiimote' });
+      }
+    } catch (err) { /* ignora */ }
+  });
+
+  socket.on('controller:ready', function (payload) {
+    try {
+      var data = payload || {};
+      state.ready = true;
+      state.id = data.id || null;
+      state.slot = data.slot == null ? null : data.slot;
+      state.protocol = data.protocol == null ? null : data.protocol;
+
+      els.slot.textContent = state.slot == null ? 'Slot —' : 'Slot ' + state.slot;
+      updateConnectionStatus();
+
+      console.log(
+        '[controller] registrato: id=' + state.id +
+        ' slot=' + state.slot +
+        ' protocol=' + state.protocol
+      );
+    } catch (err) { /* ignora */ }
+  });
+
+  socket.on('tv:presence', function (payload) {
+    try {
+      var data = payload || {};
+      state.tvOnline = data.online === true;
+      state.tvTotal = typeof data.total === 'number' ? data.total : (state.tvOnline ? 1 : 0);
+      updateConnectionStatus();
+    } catch (err) { /* ignora */ }
+  });
+
+  socket.on('disconnect', function () {
+    try {
+      state.ready = false;
+      releaseAllButtons();
+      state.lastSent = 0;
+      if (!state.helloBlocked) setStatus('connecting', 'Riconnessione…');
+    } catch (err) { /* ignora */ }
+  });
+
+  socket.on('connect_error', function () {
+    try {
+      if (!state.helloBlocked) setStatus('connecting', 'Riconnessione…');
+    } catch (err) { /* ignora */ }
+  });
+
+  socket.on('error', function (payload) {
+    try {
+      if (payload && payload.code === 'already_registered') {
+        state.helloBlocked = true; // non ritentare hello
+        setStatus('error', 'Errore: ruolo già registrato');
+      } else {
+        setStatus('error', 'Errore di connessione');
+      }
+    } catch (err) { /* ignora */ }
+  });
+
+  function bye() {
+    try {
+      socket.emit('controller:bye');
+    } catch (err) { /* ignora */ }
+  }
+
+  window.addEventListener('pagehide', bye);
+  window.addEventListener('beforeunload', bye);
+
+  // Desktop / browser senza DeviceOrientationEvent: touch-pad subito.
+  if (!('DeviceOrientationEvent' in window)) {
+    activateFallback();
+  }
+})();
+</script>
+</body>
+</html>
