@@ -1,26 +1,26 @@
-# Task estratto da Agente A (Ciclo 114)
+# Task estratto da Agente A (Ciclo 115)
 
-
-
-  ╭────────────────────────────────────────────────────────────────────────╮
-  │ Error                                                                  │
-  │ This model purchase was refunded to the daily pool or wallet that paid │
-  │ for it. Start a new session to try again. The model may be busy or     │
-  │ unavailable right now: send your message again to retry, or pick       │   ▄
-  │ another model with /model.                                             │   █
-  ╰────────────────────────────────────────────────────────────────────────╯   █
-                                                                          △▽   █
+ ┌──────────────────────────────────────────────────────────────────┐
+ │ Your first message starts the session.                           │
+ │ 0/5 hours remaining                                              │
+ │ 2 day streak                                                     │
+ │                                                                  │
+ │ ✦ Refer friends → earn hours:                                    │
+ │                                                                  │
+ │ ⎘ Copy invite link  Learn More ↵                                 │
+ └──────────────────────────────────────────────────────────────────┘
+                                                                               █
  ╭────────────────────────────────────────────────────────────────────────────╮
- │ Diventa globale senza toccare il tuo JSX                    Ad [Report 86] │
- │ Aggiungere lingue di solito significa refattorizzare i componenti e g…     │
- │  Provalo gratis  weglot.com                                                │
+ │ Integrate support workflows with SparrowDesk                Ad [Report 74] │
+ │ Orchestrate complex workflows and support tasks with SparrowDesk AI a…     │
+ │  Try SparrowDesk  sparrowdesk.com                                          │
  ╰────────────────────────────────────────────────────────────────────────────╯
-╭──────────────────────────────────────────────────────────────────────────────╮
-│                                                                              │
-│  ▍Enter a coding task or / for commands                                      │
-│                                                                              │
-╰──────────────────────────────────────────────────────────────────────────────╯
- DeepSeek V4.1 Flash Slow · ~/progetti/mini-wii · /model to change · Chat: Sei
- AGENTE A. Leggi .bus/METAPROMPT.md e .bus/REPORT_B.md, controlla git log -n 2
- e i file del re...
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ Not enough hours for DeepSeek V4.1 Flash Slow: an hour on it takes 1 hour.   │
+│ Choose another model or visit https://freebuff.com/plans.                    │
+│ Enter: choose another model  Esc: back to draft                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+ DeepSeek V4.1 Flash Slow · ~/progetti/mini-wii · /model to change · Chat: New
+ chat
  ← for history · ? for help
