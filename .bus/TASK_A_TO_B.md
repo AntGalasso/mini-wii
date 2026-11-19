@@ -1,20 +1,20 @@
-# Task estratto da Agente A (Ciclo 116)
+# Task estratto da Agente A (Ciclo 117)
 
    esegui: touch .bus/ready_for_b ⎘
 
 
   ╭────────────────────────────────────────────────────────────────────────╮
   │ Error                                                                  │
-  │ Freebuff did not send this message to the model. It breaks the usage   │
-  │ policy (Scripted or automated use): it is the same message sent over   │
-  │ and over, or automated account or site farming. It counts as strike 10 │   █
-  │ today. Strikes reset at midnight, when your daily hours refill.        │   █
+  │ This model purchase was refunded to the daily pool or wallet that paid │
+  │ for it. Start a new session to try again. The model may be busy or     │
+  │ unavailable right now: send your message again to retry, or pick       │   ▄
+  │ another model with /model.                                             │   █
   ╰────────────────────────────────────────────────────────────────────────╯   █
                                                                           △▽   █
  ╭────────────────────────────────────────────────────────────────────────────╮
- │ Headless browsers without the infrastructure                Ad [Report 77] │
- │ Connect Playwright or Puppeteer to Browserless for browser automation…     │
- │  Explore Browserless  browserless.io                                       │
+ │ Costruisci per la taglia                                    Ad [Report 87] │
+ │ Un punteggio pubblicato classifica ogni voce.                              │
+ │  Scopri di più  make.fun                                                   │
  ╰────────────────────────────────────────────────────────────────────────────╯
 ╭──────────────────────────────────────────────────────────────────────────────╮
 │                                                                              │

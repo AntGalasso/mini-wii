@@ -1,4 +1,4 @@
-# Report estratto da Agente B (Ciclo 116)
+# Report estratto da Agente B (Ciclo 117)
 
 
 
@@ -11,9 +11,9 @@
   ╰────────────────────────────────────────────────────────────────────────╯   █
                                                                           △▽   █
  ╭────────────────────────────────────────────────────────────────────────────╮
- │ Manage app servers with SPanel                             Ad [Report 102] │
- │ Automate your infrastructure management and deployments with SPanel's…     │
- │  Get Started  imp.scalahosting.com                                         │
+ │ Ottieni $20 per provare Exa                                 Ad [Report 95] │
+ │ L'API di ricerca web per i tuoi agenti                                     │
+ │  Ottieni $20 di crediti  dashboard.exa.ai                                  │
  ╰────────────────────────────────────────────────────────────────────────────╯
 ╭──────────────────────────────────────────────────────────────────────────────╮
 │                                                                              │
