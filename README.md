@@ -16,7 +16,7 @@ gli indirizzi utili per PC e telefono.
 
 ## Come si gioca
 
-1. Apri **`http://<ip-del-pc>:3000/tv`** sul PC: vedi il QR e l'URL del telecomando.
+1. Apri **`[http://<ip-del-pc>:3000/tv](http://100.74.211.1:3000/tv)`** sul PC: vedi il QR e l'URL del telecomando.
 2. Inquadra il QR con il telefono oppure apri **`http://<ip-del-pc>:3000/controller`**
    sullo stesso telefono, **stessa rete Wi-Fi** del PC.
 3. Concedi il permesso ai sensori quando richiesto, poi muovi il telefono: il mirino
