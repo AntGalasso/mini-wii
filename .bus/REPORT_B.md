@@ -1,4 +1,4 @@
-# Report estratto da Agente B (Ciclo 118)
+# Report estratto da Agente B (Ciclo 119)
 
 
 
@@ -11,9 +11,9 @@
   ╰────────────────────────────────────────────────────────────────────────╯   █
                                                                           △▽   █
  ╭────────────────────────────────────────────────────────────────────────────╮
- │ Manage app servers with SPanel                              Ad [Report 98] │
- │ Automate your infrastructure management and deployments with SPanel's…     │
- │  Get Started  imp.scalahosting.com                                         │
+ │ Try Exa and get $20 in API credits                         Ad [Report 105] │
+ │ The Exa web search API retrieves the best, realtime data for your age…     │
+ │  Claim $20 credits  dashboard.exa.ai                                       │
  ╰────────────────────────────────────────────────────────────────────────────╯
 ╭──────────────────────────────────────────────────────────────────────────────╮
 │                                                                              │

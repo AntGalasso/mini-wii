@@ -1,4 +1,4 @@
-# Task estratto da Agente A (Ciclo 118)
+# Task estratto da Agente A (Ciclo 119)
 
    esegui: touch .bus/ready_for_b ⎘
 
@@ -12,9 +12,9 @@
   ╰────────────────────────────────────────────────────────────────────────╯   █
                                                                           △▽   █
  ╭────────────────────────────────────────────────────────────────────────────╮
- │ Scale Your Backend with Vetted Engineers                    Ad [Report 88] │
- │ Scale your technical workflows with ProjectAAL's vetted engineers and…     │
- │  Scale Now  projectaal.com                                                 │
+ │ Costruisci per la taglia                                    Ad [Report 87] │
+ │ Un punteggio pubblicato classifica ogni voce.                              │
+ │  Scopri di più  make.fun                                                   │
  ╰────────────────────────────────────────────────────────────────────────────╯
 ╭──────────────────────────────────────────────────────────────────────────────╮
 │                                                                              │
