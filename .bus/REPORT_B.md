@@ -1,4 +1,4 @@
-# Report estratto da Agente B (Ciclo 122)
+# Report estratto da Agente B (Ciclo 123)
 
 
 
@@ -11,9 +11,9 @@
   ╰────────────────────────────────────────────────────────────────────────╯   █
                                                                           △▽   █
  ╭────────────────────────────────────────────────────────────────────────────╮
- │ Prova Exa e ottieni $20 di crediti API                     Ad [Report 108] │
- │ L'API di ricerca web Exa recupera i dati migliori e in tempo reale pe…     │
- │  Richiedi $20 di crediti  dashboard.exa.ai                                 │
+ │ Get structured global news data in real time               Ad [Report 109] │
+ │ Automate your news workflows with Webz.io’s real-time API for structu…     │
+ │  Get Started  webz.io                                                      │
  ╰────────────────────────────────────────────────────────────────────────────╯
 ╭──────────────────────────────────────────────────────────────────────────────╮
 │                                                                              │

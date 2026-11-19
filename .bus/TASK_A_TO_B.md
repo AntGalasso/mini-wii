@@ -1,4 +1,4 @@
-# Task estratto da Agente A (Ciclo 122)
+# Task estratto da Agente A (Ciclo 123)
 
    esegui: touch .bus/ready_for_b ⎘
 
@@ -12,9 +12,9 @@
   ╰────────────────────────────────────────────────────────────────────────╯   █
                                                                           △▽   █
  ╭────────────────────────────────────────────────────────────────────────────╮
- │ Integrate support workflows with SparrowDesk                Ad [Report 43] │
- │ Orchestrate complex workflows and automate technical tasks with Sparr…     │
- │  Try SparrowDesk  sparrowdesk.com                                          │
+ │ Run coding agents on your existing AI subscriptions         Ad [Report 46] │
+ │ Orchestrate your multi-agent workflows with OpenLLM's developer-focus…     │
+ │  Start Building  openllm.sh                                                │
  ╰────────────────────────────────────────────────────────────────────────────╯
 ╭──────────────────────────────────────────────────────────────────────────────╮
 │                                                                              │
