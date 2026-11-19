@@ -1,4 +1,4 @@
-# Report estratto da Agente B (Ciclo 120)
+# Report estratto da Agente B (Ciclo 121)
 
 
 
@@ -11,9 +11,9 @@
   ╰────────────────────────────────────────────────────────────────────────╯   █
                                                                           △▽   █
  ╭────────────────────────────────────────────────────────────────────────────╮
- │ Try Exa and get $20 in API credits                         Ad [Report 105] │
- │ The Exa web search API retrieves the best, realtime data for your age…     │
- │  Claim $20 credits  dashboard.exa.ai                                       │
+ │ Run coding agents on your existing AI subscriptions         Ad [Report 58] │
+ │ Orchestrate your multi-agent pipelines with OpenLLM's developer-focus…     │
+ │  Start Building  openllm.sh                                                │
  ╰────────────────────────────────────────────────────────────────────────────╯
 ╭──────────────────────────────────────────────────────────────────────────────╮
 │                                                                              │

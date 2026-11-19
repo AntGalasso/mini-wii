@@ -1,4 +1,4 @@
-# Task estratto da Agente A (Ciclo 120)
+# Task estratto da Agente A (Ciclo 121)
 
    esegui: touch .bus/ready_for_b ⎘
 
@@ -12,8 +12,8 @@
   ╰────────────────────────────────────────────────────────────────────────╯   █
                                                                           △▽   █
  ╭────────────────────────────────────────────────────────────────────────────╮
- │ Run coding agents on your existing AI subscriptions         Ad [Report 90] │
- │ Orchestrate coding agents and clients with OpenLLM's developer-focuse…     │
+ │ Run coding agents on your existing AI subscriptions         Ad [Report 39] │
+ │ Orchestrate your multi-agent workflows with OpenLLM's developer-focus…     │
  │  Start Building  openllm.sh                                                │
  ╰────────────────────────────────────────────────────────────────────────────╯
 ╭──────────────────────────────────────────────────────────────────────────────╮
